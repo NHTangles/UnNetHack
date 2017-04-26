@@ -721,6 +721,7 @@ infodir
 docdir
 oldincludedir
 includedir
+runstatedir
 localstatedir
 sharedstatedir
 sysconfdir
@@ -865,6 +866,7 @@ datadir='${datarootdir}'
 sysconfdir='${prefix}/etc'
 sharedstatedir='${prefix}/com'
 localstatedir='${prefix}/var'
+runstatedir='${localstatedir}/run'
 includedir='${prefix}/include'
 oldincludedir='/usr/include'
 docdir='${datarootdir}/doc/${PACKAGE_TARNAME}'
@@ -1117,6 +1119,15 @@ do
   | -silent | --silent | --silen | --sile | --sil)
     silent=yes ;;
 
+  -runstatedir | --runstatedir | --runstatedi | --runstated \
+  | --runstate | --runstat | --runsta | --runst | --runs \
+  | --run | --ru | --r)
+    ac_prev=runstatedir ;;
+  -runstatedir=* | --runstatedir=* | --runstatedi=* | --runstated=* \
+  | --runstate=* | --runstat=* | --runsta=* | --runst=* | --runs=* \
+  | --run=* | --ru=* | --r=*)
+    runstatedir=$ac_optarg ;;
+
   -sbindir | --sbindir | --sbindi | --sbind | --sbin | --sbi | --sb)
     ac_prev=sbindir ;;
   -sbindir=* | --sbindir=* | --sbindi=* | --sbind=* | --sbin=* \
@@ -1254,7 +1265,7 @@ fi
 for ac_var in	exec_prefix prefix bindir sbindir libexecdir datarootdir \
 		datadir sysconfdir sharedstatedir localstatedir includedir \
 		oldincludedir docdir infodir htmldir dvidir pdfdir psdir \
-		libdir localedir mandir
+		libdir localedir mandir runstatedir
 do
   eval ac_val=\$$ac_var
   # Remove trailing slashes.
@@ -1407,6 +1418,7 @@ Fine tuning of the installation directories:
   --sysconfdir=DIR        read-only single-machine data [PREFIX/etc]
   --sharedstatedir=DIR    modifiable architecture-independent data [PREFIX/com]
   --localstatedir=DIR     modifiable single-machine data [PREFIX/var]
+  --runstatedir=DIR       modifiable per-process data [LOCALSTATEDIR/run]
   --libdir=DIR            object code libraries [EPREFIX/lib]
   --includedir=DIR        C header files [PREFIX/include]
   --oldincludedir=DIR     C header files for non-gcc [/usr/include]
@@ -1443,7 +1455,7 @@ Optional Features:
   --enable-dummy-graphics dummy graphics for unit tests (default=no)
   --enable-lisp-graphics  enable playing UnNetHack in Emacs (default=no)
   --enable-curses-graphics
-                          use curses interface (default=no)
+                          use curses interface (default=yes)
   --enable-tty-graphics   use tty-graphics (default=auto)
   --enable-x11-graphics   use x11-graphics (default=no)
   --enable-mswin-graphics use Microsoft Window's native graphics (default=no)
@@ -1492,35 +1504,35 @@ Optional Features:
   --enable-quiver-fired   Firing without anything quivered will ask you what
                           to quiver (default=yes)
   --enable-qwertz         QWERTZ keyboard layout support (default=yes)
-  --enable-simple-mail    simple mail dgamelaunch support (default=no)
+  --enable-simple-mail    simple mail dgamelaunch support (default=yes)
   --enable-xlogfile=FILE  More verbose logfile (default=yes, default
                           file=[xlogfile])
-  --enable-livelog=FILE   Live game progress logfile (default=no, default
+  --enable-livelog=FILE   Live game progress logfile (default=yes, default
                           file=[livelog])
   --enable-livelog-shout  Shoutting into the live game logfile (default=no)
   --enable-livelog-killing
                           Reporting killing of uniques and ghosts of former
-                          players (default=no)
+                          players (default=yes)
   --enable-dump           Dumping character stats (default=yes)
-  --enable-dump-file=FILE Name of character dump file (default=no, default
-                          file=["/tmp/%n.nh"])
+  --enable-dump-file=FILE Name of character dump file (default=yes, default
+                          file=["/dgldir/userdata/%N/%n/un531/dumplog/%t.un531.txt"])
   --enable-dump-messages=NUMBER
                           Number of dumped messages (default=yes, default
                           number=[30])
   --enable-dump-text      Dump a text file (default=yes)
-  --enable-dump-html      Dump an HTML file (default=no)
+  --enable-dump-html      Dump an HTML file (default=yes)
   --enable-dump-html-css-file=FILE
                           Path to the css dump file (default=yes, default
-                          file=["unnethack_dump.css"])
+                          file=["/un531/share/unnethack/unnethack_dump.css"])
   --enable-dump-html-css-embedded
                           CSS file should be included in the HTML dump
-                          (default=no)
+                          (default=yes)
   --enable-utf8-glyphs    Enable UTF-8 glyphs in TTY (default=yes)
   --enable-whereis-file=FILE
-                          Log information about running games (default=no,
+                          Log information about running games (default=yes,
                           default file=[%n.whereis])
   --enable-wizmode=USER   enable wizard mode for the specified user
-                          (default=yes, default user=[wizard])
+                          (default=no, default user=[wizard])
   --enable-file-areas     Place files in different directories (default=yes)
 
 Optional Packages:
@@ -2771,7 +2783,7 @@ $as_echo "no" >&6; }
 if test "${enable_curses_graphics+set}" = set; then :
   enableval=$enable_curses_graphics; enable_curses_graphics="$enableval"
 else
-  enable_curses_graphics="no"
+  enable_curses_graphics="yes"
 fi
 
   { $as_echo "$as_me:${as_lineno-$LINENO}: checking curses-graphics" >&5
@@ -6881,7 +6893,7 @@ $as_echo_n "checking whether to enable simple-mail... " >&6; }
 if test "${enable_simple_mail+set}" = set; then :
   enableval=$enable_simple_mail;
 else
-  enable_simple_mail="no"
+  enable_simple_mail="yes"
 fi
 
    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $enable_simple_mail" >&5
@@ -6932,7 +6944,7 @@ if test "${enable_livelog+set}" = set; then :
          else livelog=livelog; fi;
         else enable_livelog=no; fi
 else
-  enable_livelog=no;livelog=livelog
+  enable_livelog=yes;livelog=livelog
 fi
 
    if test "$enable_livelog" != "no" ; then
@@ -6976,7 +6988,7 @@ $as_echo_n "checking whether to enable livelog-killing... " >&6; }
 if test "${enable_livelog_killing+set}" = set; then :
   enableval=$enable_livelog_killing;
 else
-  enable_livelog_killing="no"
+  enable_livelog_killing="yes"
 fi
 
    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $enable_livelog_killing" >&5
@@ -7017,10 +7029,10 @@ $as_echo_n "checking whether to enable dump file... " >&6; }
 if test "${enable_dump_file+set}" = set; then :
   enableval=$enable_dump_file; if test "$enableval" != no; then enable_dump_file=yes;
          if test "$enableval" != yes; then dump_file=$enableval;
-         else dump_file="/tmp/%n.nh"; fi;
+         else dump_file="/dgldir/userdata/%N/%n/un531/dumplog/%t.un531.txt"; fi;
         else enable_dump_file=no; fi
 else
-  enable_dump_file=no;dump_file="/tmp/%n.nh"
+  enable_dump_file=yes;dump_file="/dgldir/userdata/%N/%n/un531/dumplog/%t.un531.txt"
 fi
 
    if test "$enable_dump_file" != "no" ; then
@@ -7090,7 +7102,7 @@ $as_echo_n "checking whether to enable dump-html... " >&6; }
 if test "${enable_dump_html+set}" = set; then :
   enableval=$enable_dump_html;
 else
-  enable_dump_html="no"
+  enable_dump_html="yes"
 fi
 
    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $enable_dump_html" >&5
@@ -7110,10 +7122,10 @@ $as_echo_n "checking whether to enable dump html css file... " >&6; }
 if test "${enable_dump_html_css_file+set}" = set; then :
   enableval=$enable_dump_html_css_file; if test "$enableval" != no; then enable_dump_html_css_file=yes;
          if test "$enableval" != yes; then dump_html_css_file=$enableval;
-         else dump_html_css_file="unnethack_dump.css"; fi;
+         else dump_html_css_file="/un531/share/unnethack/unnethack_dump.css"; fi;
         else enable_dump_html_css_file=no; fi
 else
-  enable_dump_html_css_file=yes;dump_html_css_file="unnethack_dump.css"
+  enable_dump_html_css_file=yes;dump_html_css_file="/un531/share/unnethack/unnethack_dump.css"
 fi
 
    if test "$enable_dump_html_css_file" != "no" ; then
@@ -7137,7 +7149,7 @@ $as_echo_n "checking whether to enable dump-html-css-embedded... " >&6; }
 if test "${enable_dump_html_css_embedded+set}" = set; then :
   enableval=$enable_dump_html_css_embedded;
 else
-  enable_dump_html_css_embedded="no"
+  enable_dump_html_css_embedded="yes"
 fi
 
    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $enable_dump_html_css_embedded" >&5
@@ -7190,7 +7202,7 @@ if test "${enable_whereis_file+set}" = set; then :
          else whereis_file=%n.whereis; fi;
         else enable_whereis_file=no; fi
 else
-  enable_whereis_file=no;whereis_file=%n.whereis
+  enable_whereis_file=yes;whereis_file=%n.whereis
 fi
 
    if test "$enable_whereis_file" != "no" ; then
@@ -7218,7 +7230,7 @@ if test "${enable_wizmode+set}" = set; then :
          else wizmode=wizard; fi;
         else enable_wizmode=no; fi
 else
-  enable_wizmode=yes;wizmode=wizard
+  enable_wizmode=no;wizmode=wizard
 fi
 
    if test "$enable_wizmode" != "no" ; then
