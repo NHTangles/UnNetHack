@@ -12,7 +12,6 @@
 # autonamed chroot directory. Can rename.
 DATESTAMP=`date +%Y%m%d-%H%M%S`
 NAO_CHROOT=/opt/nethack/hardfought.org
-#NAO_CHROOT=/opt/nethack/chroot
 # config outside of chroot
 DGL_CONFIG="/opt/nethack/dgamelaunch.conf"
 # already compiled versions of dgl and nethack
@@ -102,13 +101,13 @@ fi
 LIBS=`for lib in $LIBS; do echo $lib; done | sort | uniq`
 echo "Copying libraries:" $LIBS
 for lib in $LIBS; do
-        mkdir -p "$NAO_CHROOT`dirname $lib`"
-        if [ -f "$NAO_CHROOT$lib" ]
-        then
-                echo "$NAO_CHROOT$lib already exists - skipping."
-        else
-                cp $lib "$NAO_CHROOT$lib"
-        fi
+  mkdir -p "$NAO_CHROOT`dirname $lib`"
+  if [ -f "$NAO_CHROOT$lib" ]
+  then
+    echo "$NAO_CHROOT$lib already exists - skipping."
+  else
+    cp $lib "$NAO_CHROOT$lib"
+  fi
 done
 
 echo "Finished."
