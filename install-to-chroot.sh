@@ -98,6 +98,16 @@ if [ -n "$NETHACKBIN" -a -e "$NETHACKBIN" ]; then
   cd "$NAO_CHROOT"
 fi
 
+RECOVER="$NETHACK_GIT/util/recover"
+
+if [ -n "$RECOVER" -a -e "$RECOVER" ]; then
+  echo "Copying $RECOVER"
+  cp "$RECOVER" "$NAO_CHROOT/$NHSUBDIR/var/unnethack"
+  LIBS="$LIBS `findlibs $RECOVER`"
+  cd "$NAO_CHROOT"
+fi
+
+
 LIBS=`for lib in $LIBS; do echo $lib; done | sort | uniq`
 echo "Copying libraries:" $LIBS
 for lib in $LIBS; do

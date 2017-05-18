@@ -1530,7 +1530,7 @@ Optional Features:
   --enable-utf8-glyphs    Enable UTF-8 glyphs in TTY (default=yes)
   --enable-whereis-file=FILE
                           Log information about running games (default=yes,
-                          default file=[%n.whereis])
+                          default file=["whereis/%n.whereis"])
   --enable-wizmode=USER   enable wizard mode for the specified user
                           (default=no, default user=[wizard])
   --enable-file-areas     Place files in different directories (default=yes)
