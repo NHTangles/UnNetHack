@@ -28,7 +28,7 @@ nethack_default_win=""
 # Note: Order is important: The last listed enabled port will be the default.
 NETHACK_WIN_ENABLE(dummy, no, [dummy graphics for unit tests])
 NETHACK_WIN_ENABLE(lisp, no, [enable playing UnNetHack in Emacs])
-NETHACK_WIN_ENABLE(curses, no, [use curses interface])
+NETHACK_WIN_ENABLE(curses, yes, [use curses interface])
 NETHACK_WIN_ENABLE(tty, auto)
 NETHACK_WIN_ENABLE(x11, no)
 NETHACK_WIN_ENABLE(mswin, no, [use Microsoft Window's native graphics])
@@ -452,25 +452,25 @@ NETHACK_ARG(autopickup-exceptions,[Exceptions to autopickup],
   AUTOPICKUP_EXCEPTIONS,yes)
 NETHACK_ARG(quiver-fired,[Firing without anything quivered will ask you what to quiver],QUIVER_FIRED,yes)
 NETHACK_ARG(qwertz,[QWERTZ keyboard layout support],QWERTZ,yes)
-NETHACK_ARG(simple-mail,[simple mail dgamelaunch support],SIMPLE_MAIL,no)
+NETHACK_ARG(simple-mail,[simple mail dgamelaunch support],SIMPLE_MAIL,yes)
 
 NETHACK_ARG_WITH_PARAM(xlogfile,[More verbose logfile],XLOGFILE,yes,FILE,[xlogfile])
 
-NETHACK_ARG_WITH_PARAM(livelog,[Live game progress logfile],LIVELOGFILE,no,FILE,[livelog])
+NETHACK_ARG_WITH_PARAM(livelog,[Live game progress logfile],LIVELOGFILE,yes,FILE,[livelog])
 if test "$enable_livelog" != "no" ; then
 	NETHACK_ARG(livelog-shout,[Shoutting into the live game logfile],LIVELOG_SHOUT,no)
-	NETHACK_ARG(livelog-killing,[Reporting killing of uniques and ghosts of former players],LIVELOG_BONES_KILLER,no)
+	NETHACK_ARG(livelog-killing,[Reporting killing of uniques and ghosts of former players],LIVELOG_BONES_KILLER,yes)
 fi
 
 NETHACK_ARG(dump,[Dumping character stats],DUMP_LOG,yes)
 if test "$enable_dump" != "no" ; then
-	NETHACK_ARG_WITH_PARAM(dump-file,[Name of character dump file],DUMP_FN,no,FILE,"/tmp/%n.nh")
+	NETHACK_ARG_WITH_PARAM(dump-file,[Name of character dump file],DUMP_FN,yes,FILE,"/dgldir/userdata/%N/%n/un531/dumplog/%t.un531.txt")
 	NETHACK_ARG_WITH_PARAM(dump-messages,[Number of dumped messages],DUMPMSGS,yes,NUMBER,30)
 	NETHACK_ARG(dump-text,[Dump a text file],DUMP_TEXT_LOG,yes)
-	NETHACK_ARG(dump-html,[Dump an HTML file],DUMP_HTML_LOG,no)
+	NETHACK_ARG(dump-html,[Dump an HTML file],DUMP_HTML_LOG,yes)
 	if test "$enable_dump_html" != "no" ; then
-		NETHACK_ARG_WITH_PARAM(dump-html-css-file,[Path to the css dump file],DUMP_HTML_CSS_FILE,yes,FILE,"unnethack_dump.css")
-		NETHACK_ARG(dump-html-css-embedded,[CSS file should be included in the HTML dump],DUMP_HTML_CSS_EMBEDDED,no)
+		NETHACK_ARG_WITH_PARAM(dump-html-css-file,[Path to the css dump file],DUMP_HTML_CSS_FILE,yes,FILE,"/un531/share/unnethack/unnethack_dump.css")
+		NETHACK_ARG(dump-html-css-embedded,[CSS file should be included in the HTML dump],DUMP_HTML_CSS_EMBEDDED,yes)
 	fi
 fi
 
@@ -485,9 +485,9 @@ if test "$enable_tty_graphics" != "no"; then
 fi
 
 
-NETHACK_ARG_WITH_PARAM(whereis-file,[Log information about running games],WHEREIS_FILE,no,FILE,[%n.whereis])
+NETHACK_ARG_WITH_PARAM(whereis-file,[Log information about running games],WHEREIS_FILE,yes,FILE,[%n.whereis])
 
-NETHACK_ARG_WITH_PARAM(wizmode,[enable wizard mode for the specified user],WIZARD,yes,USER,[wizard])
+NETHACK_ARG_WITH_PARAM(wizmode,[enable wizard mode for the specified user],WIZARD,no,USER,[wizard])
 
 if test "$CHOWN" != "true"; then
     AC_MSG_CHECKING([for owner of installed files])

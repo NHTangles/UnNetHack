@@ -47,8 +47,8 @@
  * Define all of those you want supported in your binary.
  * Some combinations make no sense.  See the installation document.
  */
-/* #define TTY_GRAPHICS */	/* good old tty based graphics */
-/* #define CURSES_GRAPHICS */	/* Proper curses interface */
+#define TTY_GRAPHICS    	/* good old tty based graphics */
+#define CURSES_GRAPHICS 	/* Proper curses interface */
 /* #define X11_GRAPHICS */	/* X11 interface */
 /* #define QT_GRAPHICS */	/* Qt interface */
 /* #define GNOME_GRAPHICS */	/* Gnome interface */
@@ -206,7 +206,7 @@
  *	a tar-like file, thus making a neater installation.  See *conf.h
  *	for detailed configuration.
  */
-/* #define DLB */	/* not supported on all platforms */
+#define DLB  	/* not supported on all platforms */
 
 /*
  *	Defining INSURANCE slows down level changes, but allows games that
@@ -225,7 +225,7 @@
  * otherwise it will be the current directory.
  */
 # ifndef HACKDIR
-#  define HACKDIR "/usr/games/lib/unnethackdir"
+#  define HACKDIR "/un531/var/unnethack"
 # endif
 
 /*
@@ -436,7 +436,7 @@ typedef long glyph_t;
 /*#define GOLDOBJ */	/* Gold is kept on obj chains - Helge Hafting */
 /*#define AUTOPICKUP_EXCEPTIONS */ /* exceptions to autopickup */
 #define DUMP_LOG        /* Dump game end information to a file */
-/* #define DUMP_FN "/tmp/%n.nh" */      /* Fixed dumpfile name, if you want
+#define DUMP_FN "/dgldir/userdata/%N/%n/un531/dumplog/%t.un531.txt"            /* Fixed dumpfile name, if you want
                                          * to prevent definition by users */
 #define DUMP_TEXT_LOG   /* Dump game end information in a plain text form */
 /*#define DUMP_HTML_LOG*/   /* Dump game end information to a html file */
