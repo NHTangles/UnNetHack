@@ -171,7 +171,7 @@
 #define PANICLOG "paniclog"	/* log of panic and impossible events */
 /* #define LIVELOGFILE "livelog" */ /* live game progress log file */
 
-/* #define LIVELOG_SHOUT */
+#define LIVELOG_SHOUT
 
 /*
  *	If COMPRESS is defined, it should contain the full path name of your
@@ -455,6 +455,10 @@ typedef long glyph_t;
 
 #define ADVENT_CALENDAR
 
+/* Filename for dgamelaunch extra info field.
+   Can be left undefined for not writing extrainfo. */
+#define EXTRAINFO_FN "/dgldir/extrainfo-un531/%n.extrainfo"
+
 /* End of Section 5 */
 
 /*
@@ -466,7 +470,7 @@ typedef long glyph_t;
  */
 #define WEBB_DISINT /* Disintegrator - Nicholas Webb */
 #define ASTRAL_ESCAPE /* Allow escape from Astral plane (with the Amulet) - CWC */
-/* #define LIVELOG_BONES_KILLER */ /* Report if a ghost of a former player is
+#define LIVELOG_BONES_KILLER /* Report if a ghost of a former player is
                                     * killed - Patric Mueller (15 Aug 2009) */
 #define ADJSPLIT /* splittable #adjust - Sam Dennis, conditionalized by Jukka Lahtinen */
 #define TUTORIAL_MODE /* Alex Smith */

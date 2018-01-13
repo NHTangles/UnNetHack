@@ -19,6 +19,8 @@ STATIC_DCL void FDECL(interrupt_multi, (const char *,int,int));
 
 static int prev_hp_notify;
 
+static long prev_dgl_extrainfo = 0;
+
 char *
 hpnotify_format_str(char *str)
 {
@@ -326,6 +328,11 @@ moveloop()
 		    if (u.ublesscnt)  u.ublesscnt--;
 		    if(flags.time && !flags.run)
 			flags.botl = 1;
+
+                    if ((prev_dgl_extrainfo == 0) || (prev_dgl_extrainfo < (moves + 250))) {
+                        prev_dgl_extrainfo = moves;
+                        mk_dgl_extrainfo();
+                    }
 
 		    /* One possible result of prayer is healing.  Whether or
 		     * not you get healed depends on your current hit points.
