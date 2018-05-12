@@ -404,6 +404,9 @@ struct instance_flags {
     uint64_t color_definitions[CLR_MAX];
     char     truecolor_separator;
 #endif
+  boolean msg_is_alert; /* suggest windowport should grab player's attention
+                         * and request <TAB> acknowlegement */
+
 };
 
 /*
