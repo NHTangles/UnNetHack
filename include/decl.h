@@ -512,6 +512,7 @@ E struct _plinemsg *pline_msg;
 #define MSGTYP_NOREP	1
 #define MSGTYP_NOSHOW	2
 #define MSGTYP_STOP	3
+#define MSGTYP_ALERT    4
 
 #ifdef RECORD_ACHIEVE
 struct u_achieve {
