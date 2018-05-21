@@ -11,7 +11,7 @@
 
 # autonamed chroot directory. Can rename.
 DATESTAMP=`date +%Y%m%d-%H%M%S`
-NAO_CHROOT=/opt/nethack/hardfought.org
+NAO_CHROOT="/opt/nethack/hardfought.org"
 # config outside of chroot
 DGL_CONFIG="/opt/nethack/dgamelaunch.conf"
 # already compiled versions of dgl and nethack
@@ -69,6 +69,7 @@ mkdir -p "$NAO_CHROOT$NH_VAR_PLAYGROUND"
 mkdir -p "$NAO_CHROOT$NH_VAR_PLAYGROUND/saves"
 mkdir -p "$NAO_CHROOT$NH_VAR_PLAYGROUND/level"
 mkdir -p "$NAO_CHROOT$NH_VAR_PLAYGROUND/bones"
+mkdir -p "$NAO_CHROOT$NH_VAR_PLAYGROUND/whereis"
 touch "$NAO_CHROOT$NH_VAR_PLAYGROUND/logfile"
 touch "$NAO_CHROOT$NH_VAR_PLAYGROUND/perm"
 touch "$NAO_CHROOT$NH_VAR_PLAYGROUND/record"
