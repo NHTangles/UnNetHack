@@ -1,4 +1,5 @@
 201X-XX-XX  UnNetHack 5.X.X
+	* Support SOURCE_DATE_EPOCH for reproducible builds (patch from Debian)
 	* Players killed by Nazgul will arise as Barrow Wights in bones files
 	  (a slight change from the original mythology, we know)
 	* Reviving drained corpses sometimes won't work, and may destroy 
@@ -12,6 +13,7 @@
 	* Several cosmetic changes - additional engravings, hallucinatory monsters, and funny messages.
 	* Picking up scrolls of scare monsters change BUC from blessed to
 	  uncursed to cursed
+	* Default to UTF8graphics on supporting terminals
 
 	* item changes:
 	  - Decreased weight of all mithril armor, especially ones of elven make
@@ -41,6 +43,8 @@
 	  - Fixed crash in X11 inventory
 	  - Fixed possible endless loop in autotravel on the Rogue level
 	  - Fixed lava breath related crash at the edges of the map
+	  - The chest in the Castle containing the wishing wand can never be
+	    trapped (from 3.6.0)
 
 	* vanilla bug fixes:
 	  - C343-439: Running NetHack in a terminal window with more than 255

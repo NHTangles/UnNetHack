@@ -17,7 +17,7 @@ On Windows for a console build open the Cygwin shell:
  The game will be started with ~/unnethack/bin/unnethack
 
 On Window for a GUI build open the Cygwin shell:
- env CC=i686-wpc-mingw32-gcc CFLAGS= ./configure \
+ env CC=i686-w64-mingw32-gcc CFLAGS= ./configure \
             --prefix=`pwd`/builddir_mswin \
             --with-owner="`id -un`" \
             --with-group="`id -gn`" \
