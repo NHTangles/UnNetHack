@@ -490,7 +490,7 @@ check_utf8_console()
             raw.c_cc[VTIME] = 0;
             if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw) == -1) {
                 perror("check_utf8_console after test");
-                exit(EXIT_FAILURE);
+                /* exit(EXIT_FAILURE); */ /* had to comment this out so game would load */
             }
         }
         previous_char = c;
@@ -500,25 +500,6 @@ check_utf8_console()
     if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &original) == -1) {
         perror("check_utf8_console restore terminal settings");
         exit(EXIT_FAILURE);
-    }
-}
-
-void
-init_utf8_console()
-{
-    /* select character set G0 */
-    raw_print("\x0f");
-
-    if (supports_utf8) {
-        /* select default character set for G0 */
-        raw_print("\x1b(B");
-        /* set character set as UTF-8 */
-        raw_print("\x1b%G");
-    } else {
-        /* disable Unicode, set default character set */
-        raw_print("\x1b%@");
-        /* select null mapping */
-        raw_print("\x1b(U");
     }
 }
 #endif
