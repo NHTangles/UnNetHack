@@ -14,6 +14,8 @@
 	* Picking up scrolls of scare monsters change BUC from blessed to
 	  uncursed to cursed
 	* Default to UTF8graphics on supporting terminals
+	* Putting blessed and uncursed scrolls of charging into a bag of
+	  tricks charges it
 
 	* item changes:
 	  - Decreased weight of all mithril armor, especially ones of elven make
@@ -24,11 +26,13 @@
 	    turning to dust or changing known BUC state
 	  - Don't autopickup unpaid items (from NetHack 3.6)
 	  - Change default of shopkeeper sell prompt to 'n' (idea by aosdict)
+	  - Autoidentify wands of undead turning if engraving produces a message
 
 	* dungeon layout:
 	  - Backyard of watery castle get trap doors to ensure player can
 	    descend to the VotD
 	  - Replaced lava with water on lava castle
+	  - Don't generate 1000 fountains in bigrm-13
 
 	* bug fixes
 	  - Fixed erroneous messages when remaining in stinking clouds
