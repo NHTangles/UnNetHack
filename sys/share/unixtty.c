@@ -490,7 +490,7 @@ check_utf8_console()
             raw.c_cc[VTIME] = 0;
             if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw) == -1) {
                 perror("check_utf8_console after test");
-                exit(EXIT_FAILURE);
+                /* exit(EXIT_FAILURE); */ /* had to comment this out so game would load */
             }
         }
         previous_char = c;
