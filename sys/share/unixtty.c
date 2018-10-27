@@ -462,8 +462,7 @@ check_utf8_console()
     }
 
     /* set minimal raw mode */
-    struct termios raw;
-    raw.c_lflag &= ~(ECHO | ICANON);
+    struct termios raw = { 0 };
     raw.c_cc[VMIN] = 0;
     raw.c_cc[VTIME] = 3; /* timeout of 0.3 seconds */
     if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw) == -1) {
@@ -488,9 +487,13 @@ check_utf8_console()
 
             /* disable read timeout */
             raw.c_cc[VTIME] = 0;
+            if (tcgetattr(STDIN_FILENO, &raw) == -1) {
+                perror("check_utf8_console failed getting raw settings");
+                exit(EXIT_FAILURE);
+            }
             if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw) == -1) {
-                perror("check_utf8_console after test");
-                /* exit(EXIT_FAILURE); */ /* had to comment this out so game would load */
+                perror("check_utf8_console failed disabling timeout");
+                exit(EXIT_FAILURE); /* be prepared to comment out this line if issues occur during game load */
             }
         }
         previous_char = c;
