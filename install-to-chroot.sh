@@ -25,7 +25,7 @@ COMPRESSBIN="/bin/gzip"
 NH_GIT="/home/build/UnNetHack"
 NH_BRANCH="master"
 # HACKDIR from include/config.h; aka nethack subdir inside chroot
-NHSUBDIR="un531"
+NHSUBDIR="un532"
 # VAR_PLAYGROUND from include/unixconf.h
 NH_VAR_PLAYGROUND="/un532/var/unnethack"
 # nhdat location
