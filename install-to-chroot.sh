@@ -11,7 +11,7 @@
 
 # autonamed chroot directory. Can rename.
 DATESTAMP=`date +%Y%m%d-%H%M%S`
-NAO_CHROOT="/opt/nethack/hardfought.org"
+NAO_CHROOT="/opt/nethack/chroot"
 # config outside of chroot
 DGL_CONFIG="/opt/nethack/dgamelaunch.conf"
 # already compiled versions of dgl and nethack
@@ -23,13 +23,13 @@ USRGRP="games:games"
 COMPRESSBIN="/bin/gzip"
 # fixed data to copy (leave blank to skip)
 NH_GIT="/home/build/UnNetHack"
-NH_BRANCH="5.3.1"
+NH_BRANCH="master"
 # HACKDIR from include/config.h; aka nethack subdir inside chroot
 NHSUBDIR="un531"
 # VAR_PLAYGROUND from include/unixconf.h
-NH_VAR_PLAYGROUND="/un531/var/unnethack"
+NH_VAR_PLAYGROUND="/un532/var/unnethack"
 # nhdat location
-NHDAT_DIR="/un531/share/unnethack"
+NHDAT_DIR="/un532/share/unnethack"
 # only define this if dgl was configured with --enable-sqlite
 SQLITE_DBFILE="/dgldir/dgamelaunch.db"
 # END OF CONFIG
@@ -56,10 +56,10 @@ set -e
 umask 022
 
 echo "Creating inprogress and userdata directories"
-mkdir -p "$NAO_CHROOT/dgldir/inprogress-un531"
-chown "$USRGRP" "$NAO_CHROOT/dgldir/inprogress-un531"
-mkdir -p "$NAO_CHROOT/dgldir/extrainfo-un531"
-chown "$USRGRP" "$NAO_CHROOT/dgldir/extrainfo-un531"
+mkdir -p "$NAO_CHROOT/dgldir/inprogress-un532"
+chown "$USRGRP" "$NAO_CHROOT/dgldir/inprogress-un532"
+mkdir -p "$NAO_CHROOT/dgldir/extrainfo-un532"
+chown "$USRGRP" "$NAO_CHROOT/dgldir/extrainfo-un532"
 
 echo "Making $NAO_CHROOT/$NHSUBDIR"
 mkdir -p "$NAO_CHROOT/$NHSUBDIR"
@@ -124,3 +124,4 @@ for lib in $LIBS; do
 done
 
 echo "Finished."
+

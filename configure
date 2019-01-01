@@ -1515,7 +1515,7 @@ Optional Features:
                           players (default=yes)
   --enable-dump           Dumping character stats (default=yes)
   --enable-dump-file=FILE Name of character dump file (default=yes, default
-                          file=["/dgldir/userdata/%N/%n/un531/dumplog/%t.un531.txt"])
+                          file=["/dgldir/userdata/%N/%n/un532/dumplog/%t.un532.txt"])
   --enable-dump-messages=NUMBER
                           Number of dumped messages (default=yes, default
                           number=[30])
@@ -1523,7 +1523,7 @@ Optional Features:
   --enable-dump-html      Dump an HTML file (default=yes)
   --enable-dump-html-css-file=FILE
                           Path to the css dump file (default=yes, default
-                          file=["/un531/share/unnethack/unnethack_dump.css"])
+                          file=["/un532/share/unnethack/unnethack_dump.css"])
   --enable-dump-html-css-embedded
                           CSS file should be included in the HTML dump
                           (default=yes)
@@ -7237,10 +7237,10 @@ $as_echo_n "checking whether to enable dump file... " >&6; }
 if test "${enable_dump_file+set}" = set; then :
   enableval=$enable_dump_file; if test "$enableval" != no; then enable_dump_file=yes;
          if test "$enableval" != yes; then dump_file=$enableval;
-         else dump_file="/dgldir/userdata/%N/%n/un531/dumplog/%t.un531.txt"; fi;
+         else dump_file="/dgldir/userdata/%N/%n/un532/dumplog/%t.un532.txt"; fi;
         else enable_dump_file=no; fi
 else
-  enable_dump_file=yes;dump_file="/dgldir/userdata/%N/%n/un531/dumplog/%t.un531.txt"
+  enable_dump_file=yes;dump_file="/dgldir/userdata/%N/%n/un532/dumplog/%t.un532.txt"
 fi
 
    if test "$enable_dump_file" != "no" ; then
@@ -7330,10 +7330,10 @@ $as_echo_n "checking whether to enable dump html css file... " >&6; }
 if test "${enable_dump_html_css_file+set}" = set; then :
   enableval=$enable_dump_html_css_file; if test "$enableval" != no; then enable_dump_html_css_file=yes;
          if test "$enableval" != yes; then dump_html_css_file=$enableval;
-         else dump_html_css_file="/un531/share/unnethack/unnethack_dump.css"; fi;
+         else dump_html_css_file="/un532/share/unnethack/unnethack_dump.css"; fi;
         else enable_dump_html_css_file=no; fi
 else
-  enable_dump_html_css_file=yes;dump_html_css_file="/un531/share/unnethack/unnethack_dump.css"
+  enable_dump_html_css_file=yes;dump_html_css_file="/un532/share/unnethack/unnethack_dump.css"
 fi
 
    if test "$enable_dump_html_css_file" != "no" ; then

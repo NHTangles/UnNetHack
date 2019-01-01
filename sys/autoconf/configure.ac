@@ -467,12 +467,12 @@ fi
 
 NETHACK_ARG(dump,[Dumping character stats],DUMP_LOG,yes)
 if test "$enable_dump" != "no" ; then
-	NETHACK_ARG_WITH_PARAM(dump-file,[Name of character dump file],DUMP_FN,yes,FILE,"/dgldir/userdata/%N/%n/un531/dumplog/%t.un531.txt")
+	NETHACK_ARG_WITH_PARAM(dump-file,[Name of character dump file],DUMP_FN,yes,FILE,"/dgldir/userdata/%N/%n/un532/dumplog/%t.un532.txt")
 	NETHACK_ARG_WITH_PARAM(dump-messages,[Number of dumped messages],DUMPMSGS,yes,NUMBER,30)
 	NETHACK_ARG(dump-text,[Dump a text file],DUMP_TEXT_LOG,yes)
 	NETHACK_ARG(dump-html,[Dump an HTML file],DUMP_HTML_LOG,yes)
 	if test "$enable_dump_html" != "no" ; then
-		NETHACK_ARG_WITH_PARAM(dump-html-css-file,[Path to the css dump file],DUMP_HTML_CSS_FILE,yes,FILE,"/un531/share/unnethack/unnethack_dump.css")
+		NETHACK_ARG_WITH_PARAM(dump-html-css-file,[Path to the css dump file],DUMP_HTML_CSS_FILE,yes,FILE,"/un532/share/unnethack/unnethack_dump.css")
 		NETHACK_ARG(dump-html-css-embedded,[CSS file should be included in the HTML dump],DUMP_HTML_CSS_EMBEDDED,yes)
 	fi
 fi

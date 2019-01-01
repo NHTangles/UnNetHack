@@ -225,7 +225,7 @@
  * otherwise it will be the current directory.
  */
 # ifndef HACKDIR
-#  define HACKDIR "/un531/var/unnethack"
+#  define HACKDIR "/un532/var/unnethack"
 # endif
 
 /*
@@ -436,7 +436,7 @@ typedef long glyph_t;
 /*#define GOLDOBJ */	/* Gold is kept on obj chains - Helge Hafting */
 /*#define AUTOPICKUP_EXCEPTIONS */ /* exceptions to autopickup */
 #define DUMP_LOG        /* Dump game end information to a file */
-#define DUMP_FN "/dgldir/userdata/%N/%n/un531/dumplog/%t.un531.txt"            /* Fixed dumpfile name, if you want
+#define DUMP_FN "/dgldir/userdata/%N/%n/un532/dumplog/%t.un532.txt"            /* Fixed dumpfile name, if you want
                                          * to prevent definition by users */
 #define DUMP_TEXT_LOG   /* Dump game end information in a plain text form */
 /*#define DUMP_HTML_LOG*/   /* Dump game end information to a html file */
@@ -457,7 +457,7 @@ typedef long glyph_t;
 
 /* Filename for dgamelaunch extra info field.
    Can be left undefined for not writing extrainfo. */
-#define EXTRAINFO_FN "/dgldir/extrainfo-un531/%n.extrainfo"
+#define EXTRAINFO_FN "/dgldir/extrainfo-un532/%n.extrainfo"
 
 /* End of Section 5 */
 
