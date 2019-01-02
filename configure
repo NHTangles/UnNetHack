@@ -1515,7 +1515,7 @@ Optional Features:
                           players (default=yes)
   --enable-dump           Dumping character stats (default=yes)
   --enable-dump-file=FILE Name of character dump file (default=yes, default
-                          file=["/dgldir/userdata/%N/%n/un532/dumplog/%t.un532.txt"])
+                          file=["/dgldir/userdata/%N/%n/unnethack/dumplog/%t.un.txt"])
   --enable-dump-messages=NUMBER
                           Number of dumped messages (default=yes, default
                           number=[30])
@@ -7237,10 +7237,10 @@ $as_echo_n "checking whether to enable dump file... " >&6; }
 if test "${enable_dump_file+set}" = set; then :
   enableval=$enable_dump_file; if test "$enableval" != no; then enable_dump_file=yes;
          if test "$enableval" != yes; then dump_file=$enableval;
-         else dump_file="/dgldir/userdata/%N/%n/un532/dumplog/%t.un532.txt"; fi;
+         else dump_file="/dgldir/userdata/%N/%n/unnethack/dumplog/%t.un.txt"; fi;
         else enable_dump_file=no; fi
 else
-  enable_dump_file=yes;dump_file="/dgldir/userdata/%N/%n/un532/dumplog/%t.un532.txt"
+  enable_dump_file=yes;dump_file="/dgldir/userdata/%N/%n/unnethack/dumplog/%t.un.txt"
 fi
 
    if test "$enable_dump_file" != "no" ; then
