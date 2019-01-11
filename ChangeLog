@@ -1,24 +1,31 @@
-201X-XX-XX  UnNetHack 5.X.X
+20XX-XX-XX  UnNetHack 5.X.X
+	* Use TAB as separator in xlogfile
+	* Add info about pre-seeded games to dumplog
+	* Seed is encoded as Crockford base32 string
+
+2019-01-01  UnNetHack 5.2.0
 	* Support SOURCE_DATE_EPOCH for reproducible builds (patch from Debian)
 	* Players killed by Nazgul will arise as Barrow Wights in bones files
 	  (a slight change from the original mythology, we know)
 	* Reviving drained corpses sometimes won't work, and may destroy 
 	  the corpse. Partially drained corpses are more likely to revive.
-	* Wand wresting happens always when an empty wand is zapped with a chance
-	  depending on BUC state if an effect is produced
 	* Reproducible dungeon layout. Set OPTIONS=seed:number to get the same
 	  dungeon layout.
 	* Vault Guards get angry if you eat gold in front of them. (From Nethack 
 		 Development Code - used with permission)
 	* Several cosmetic changes - additional engravings, hallucinatory monsters, and funny messages.
-	* Picking up scrolls of scare monsters change BUC from blessed to
-	  uncursed to cursed
 	* Default to UTF8graphics on supporting terminals
-	* Putting blessed and uncursed scrolls of charging into a bag of
-	  tricks charges it
 
 	* item changes:
 	  - Decreased weight of all mithril armor, especially ones of elven make
+	  - Wand wresting happens always when an empty wand is zapped with a
+	    chance depending on BUC state if an effect is produced
+	  - Putting blessed and uncursed scrolls of charging into a bag of
+	    tricks charges it
+	  - Picking up scrolls of scare monsters change BUC from blessed to
+	    uncursed to cursed
+	  - Picked up scrolls of scare monsters only turn to dust if they are
+	    cursed
 
 	* user interface improvements:
 	  - Added naming last broken object to #name menu (idea from AceHack/NH4)
@@ -135,7 +142,7 @@
 	  - Reading a Scroll of Light while confused summons some (black) lights
 	  - Reading a non-blessed scroll of punishment while confused summons a Punisher. BE CAREFUL
 	  - A horn of plenty has a *small* chance to produce potions of [vampire] blood
-	  
+
 	* artifact changes:
 	  - From SporkHack:
 	    - All the weapons below warn against and have 20% instakill chance 
@@ -599,7 +606,6 @@
 	  - Amulet of Yendor may teleport away when dropped
 	  - Scrolls of gold detection: confused reading shows a random item class
 	  - Scrolls of genocide kill monster on level (uncursed) or globally (blessed) 
-
 
 	* Patches:
 	  - Astral Escape (via GruntHack from Chi)
