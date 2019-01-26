@@ -7,6 +7,10 @@
 	  - Disable the rogue tribute level
 	  - Adjust monster distribution for dilapidated armories
 
+	* bug fixes:
+	  - Fix over-escaping of characters on HTML dump map
+	  - Fix crash when /dev/(u)random can't be opened
+
 2019-01-01  UnNetHack 5.2.0
 	* Support SOURCE_DATE_EPOCH for reproducible builds (patch from Debian)
 	* Players killed by Nazgul will arise as Barrow Wights in bones files
