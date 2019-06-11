@@ -159,6 +159,7 @@ static struct Bool_Opt
 #else
 	{"mail", (boolean *)0, TRUE, SET_IN_FILE},
 #endif
+    {"marathon", &flags.marathon, FALSE, DISP_IN_GAME },
 #ifdef MENU_COLOR
 # ifdef MICRO
 	{"menucolors", &iflags.use_menu_color, TRUE,  SET_IN_FILE},
@@ -749,6 +750,12 @@ initoptions()
 	}
 
     iflags.truecolor_separator = ';';
+
+    /* Set color default to false if env variable NO_COLOR is present.
+     * see https://no-color.org/ */
+    if (nh_getenv("NO_COLOR")) {
+        iflags.use_color = FALSE;
+    }
 # endif
 #endif /* UNIX || VMS */
 
@@ -1910,6 +1917,11 @@ boolean tinitial, tfrom_file;
     }
 	if (flags.hell_and_hell)
 		flags.heaven_or_hell = TRUE;
+
+    if (match_optname(opts, "marathon", 8, FALSE)) {
+        if (!initial)
+            marathon_mode = !negated;
+    }
 
 #if defined(MICRO) && !defined(AMIGA)
 	/* included for compatibility with old NetHack.cnf files */
