@@ -5,15 +5,21 @@
 	* Set color default to false if env variable NO_COLOR is present
 	* Add Marathon mode (start game with 999 HP and never heal), enabled
 	  with OPTIONS=marathon
+	* Monster generation rate increases slower and more linearly with turn
+	  count
 
 	* dungeon layout:
 	  - Disable the rogue tribute level
 	  - Adjust monster distribution for dilapidated armories
+	  - Blackmarket: new entrance area for the classic design
 
 	* bug fixes:
 	  - Fix over-escaping of characters on HTML dump map
 	  - Fix crash when /dev/(u)random can't be opened
 	  - Properly randomize rumors (found by Andrio Celos)
+	  - Fix map overdrawing statuslines on screens with 24 lines (found by Mandevil)
+	  - Fix crash when changing statuslines to 3 on screens with 24
+	  - Show Elbereth statusline indicator when blind and flying
 
 2019-01-01  UnNetHack 5.2.0
 	* Support SOURCE_DATE_EPOCH for reproducible builds (patch from Debian)
