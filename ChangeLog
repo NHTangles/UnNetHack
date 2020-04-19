@@ -13,6 +13,9 @@
 	  - Adjust monster distribution for dilapidated armories
 	  - Blackmarket: new entrance area for the classic design
 
+	* user interface improvements:
+	  - Optimized placement of menu windows in TTY port
+
 	* bug fixes:
 	  - Fix over-escaping of characters on HTML dump map
 	  - Fix crash when /dev/(u)random can't be opened
@@ -20,6 +23,9 @@
 	  - Fix map overdrawing statuslines on screens with 24 lines (found by Mandevil)
 	  - Fix crash when changing statuslines to 3 on screens with 24
 	  - Show Elbereth statusline indicator when blind and flying
+	  - Fix compiling with -fno-common
+	  - OPTIONS=truecolor_separator was incorrectly parsed
+	  - Bag of holding explosion also scatters contents of inserted container
 
 2019-01-01  UnNetHack 5.2.0
 	* Support SOURCE_DATE_EPOCH for reproducible builds (patch from Debian)

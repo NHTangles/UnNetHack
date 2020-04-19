@@ -1410,8 +1410,6 @@ char *str;
             c = colornames[i].color;
             break;
         }
-    if (i == SIZE(colornames) && (*str >= '0' && *str <= '9'))
-        c = atoi(str);
 
     if (c == CLR_MAX)
         raw_printf("Unknown color '%s'", str);
@@ -1447,8 +1445,6 @@ char *str;
             c = colornames[i].color;
             break;
         }
-    if ((i == SIZE(colornames)) && (*tmps >= '0' && *tmps <='9'))
-        c = atoi(tmps);
 
     if (c > CLR_UNDEFINED) return FALSE;
 
@@ -1461,8 +1457,6 @@ char *str;
 		a = attrnames[i].attr;
 		break;
 	    }
-	if ((i == SIZE(attrnames)) && (*tmps >= '0' && *tmps <='9'))
-	    a = atoi(tmps);
     }
 
     if (c == CLR_UNDEFINED && a == ATR_UNDEFINED) return FALSE;
@@ -1542,8 +1536,6 @@ char *str;
             c = colornames[i].color;
             break;
         }
-    if ((i == SIZE(colornames)) && (*tmps >= '0' && *tmps <='9'))
-        c = atoi(tmps);
 
     if (c > 15) return FALSE;
 
@@ -2942,7 +2934,7 @@ goodfruit:
             bad_negation(fullname, FALSE);
             return;
         } else if (!(op = string_for_opt(opts, FALSE))) return;
-        if (strlen(op) > 1 || (*op) != ':' || (*op) != ';') {
+        if (strlen(op) > 1 || ((*op) != ':' && (*op) != ';')) {
             badoption(opts);
         } else {
             iflags.truecolor_separator = (*op);
