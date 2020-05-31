@@ -225,7 +225,7 @@
  * otherwise it will be the current directory.
  */
 # ifndef HACKDIR
-#  define HACKDIR "/un532/var/unnethack"
+#  define HACKDIR "/un600/var/unnethack"
 # endif
 
 /*
