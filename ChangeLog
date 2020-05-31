@@ -1,4 +1,4 @@
-20XX-XX-XX  UnNetHack 5.X.X
+20XX-XX-XX  UnNetHack 6.X.X
 	* Use TAB as separator in xlogfile
 	* Add info about pre-seeded games to dumplog
 	* Seed is encoded as Crockford base32 string
@@ -7,6 +7,16 @@
 	  with OPTIONS=marathon
 	* Monster generation rate increases slower and more linearly with turn
 	  count
+	* Enable GOLDOBJ unconditionally and remove obsolete code
+	* Rename the Dark One to Anaraxis the Black (from xNetHack)
+	* Port NetHack 3.6 improvements, non exhaustive list:
+	  - Automatic fuzzer for debugging
+	  - Statues as monster symbols
+	  - Improved internal monster extra structures
+	  - Improved container menu
+	  - Wet towel handling
+	  - Vibrating square implemented as trap
+	  - Improved role/race/gender/alignment selection
 
 	* dungeon layout:
 	  - Disable the rogue tribute level
@@ -18,6 +28,8 @@
 
 	* user interface improvements:
 	  - Optimized placement of menu windows in TTY port
+	  - Mark vibrating square automatically as trap after being found
+	  - Show statues underlined in tty and curses
 
 	* bug fixes:
 	  - Fix over-escaping of characters on HTML dump map
@@ -29,6 +41,13 @@
 	  - Fix compiling with -fno-common
 	  - OPTIONS=truecolor_separator was incorrectly parsed
 	  - Bag of holding explosion also scatters contents of inserted container
+	  - Fix some bit shift warnings
+	  - Fix several out of bounds memory accesses
+	  - Fix chatting at the edge of the map
+	  - Fix several potential memory corruption bugs
+	  - Prevent buffer underflow for strprepend() with corpses
+	  - Fix warning when bribing a prison guard with an amount but no gold in
+	    inventory
 
 2019-01-01  UnNetHack 5.2.0
 	* Support SOURCE_DATE_EPOCH for reproducible builds (patch from Debian)

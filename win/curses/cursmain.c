@@ -564,14 +564,18 @@ print_glyph(window, x, y, glyph)
                    a 1-1 map between glyphs and distinct things on the map).
 */
 void
-curses_print_glyph(winid wid, XCHAR_P x, XCHAR_P y, int glyph)
+curses_print_glyph(winid wid, XCHAR_P x, XCHAR_P y, int glyph,
+                   int bg_glyph UNUSED)
 {
     int ch, color;
     unsigned int special;
     int attr = -1;
 
     /* map glyph to character and color */
-    mapglyph(glyph, (glyph_t*)&ch, &color, &special, x, y);
+    mapglyph(glyph, (glyph_t*)&ch, &color, &special, x, y, 0);
+    if (special & MG_STATUE) {
+        attr = A_UNDERLINE;
+    }
     if ((special & MG_PET) && iflags.hilite_pet) {
         attr = iflags.wc2_petattr;
     }
