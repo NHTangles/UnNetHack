@@ -225,7 +225,7 @@
  * otherwise it will be the current directory.
  */
 # ifndef HACKDIR
-#  define HACKDIR "/un600/var/unnethack"
+#  define HACKDIR "/unnethack-6.0.0/var/unnethack"
 # endif
 
 /*
@@ -456,7 +456,7 @@ typedef long glyph_t;
 
 /* Filename for dgamelaunch extra info field.
    Can be left undefined for not writing extrainfo. */
-#define EXTRAINFO_FN "/dgldir/extrainfo-un600/%n.extrainfo"
+#define EXTRAINFO_FN "/dgldir/extrainfo-un/%n.extrainfo"
 
 /* End of Section 5 */
 

@@ -27,9 +27,9 @@ NH_BRANCH="master"
 # HACKDIR from include/config.h; aka nethack subdir inside chroot
 NHSUBDIR="un600"
 # VAR_PLAYGROUND from include/unixconf.h
-NH_VAR_PLAYGROUND="/un600/var/unnethack"
+NH_VAR_PLAYGROUND="/unnethack-6.0.0/var/unnethack"
 # nhdat location
-NHDAT_DIR="/un600/share/unnethack"
+NHDAT_DIR="/unnethack-6.0.0/share/unnethack"
 # only define this if dgl was configured with --enable-sqlite
 SQLITE_DBFILE="/dgldir/dgamelaunch.db"
 # END OF CONFIG
