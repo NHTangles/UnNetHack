@@ -25,11 +25,11 @@ COMPRESSBIN="/bin/gzip"
 NH_GIT="/home/build/UnNetHack"
 NH_BRANCH="master"
 # HACKDIR from include/config.h; aka nethack subdir inside chroot
-NHSUBDIR="un532"
+NHSUBDIR="un600"
 # VAR_PLAYGROUND from include/unixconf.h
-NH_VAR_PLAYGROUND="/un532/var/unnethack"
+NH_VAR_PLAYGROUND="/un600/var/unnethack"
 # nhdat location
-NHDAT_DIR="/un532/share/unnethack"
+NHDAT_DIR="/un600/share/unnethack"
 # only define this if dgl was configured with --enable-sqlite
 SQLITE_DBFILE="/dgldir/dgamelaunch.db"
 # END OF CONFIG
@@ -56,10 +56,10 @@ set -e
 umask 022
 
 echo "Creating inprogress and userdata directories"
-mkdir -p "$NAO_CHROOT/dgldir/inprogress-un532"
-chown "$USRGRP" "$NAO_CHROOT/dgldir/inprogress-un532"
-mkdir -p "$NAO_CHROOT/dgldir/extrainfo-un532"
-chown "$USRGRP" "$NAO_CHROOT/dgldir/extrainfo-un532"
+mkdir -p "$NAO_CHROOT/dgldir/inprogress-un600"
+chown "$USRGRP" "$NAO_CHROOT/dgldir/inprogress-un600"
+mkdir -p "$NAO_CHROOT/dgldir/extrainfo-un"
+chown "$USRGRP" "$NAO_CHROOT/dgldir/extrainfo-un"
 
 echo "Making $NAO_CHROOT/$NHSUBDIR"
 mkdir -p "$NAO_CHROOT/$NHSUBDIR"
