@@ -80,10 +80,12 @@ touch "$NAO_CHROOT$NH_VAR_PLAYGROUND/livelog"
 ( cd $NAO_CHROOT/$NHSUBDIR ; chown -R "$USRGRP" * )
 
 # Everything below here should remain owned by root.
-echo "Copying NetHack nhdat"
+echo "Copying NetHack nhdat and .css files"
 mkdir -p "$NAO_CHROOT$NHDAT_DIR"
 cp "$NETHACK_GIT/dat/nhdat" "$NAO_CHROOT$NHDAT_DIR"
 chmod 644 "$NAO_CHROOT$NHDAT_DIR/nhdat"
+cp "$NETHACK_GIT/dat/unnethack_dump.css" "$NAO_CHROOT$NHDAT_DIR"
+chmod 644 "$NAO_CHROOT$NHDAT_DIR/unnethack_dump.css"
 
 NETHACKBIN="$NETHACK_GIT/src/unnethack"
 if [ -n "$NETHACKBIN" -a ! -e "$NETHACKBIN" ]; then
