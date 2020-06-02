@@ -196,6 +196,7 @@ E void FDECL(savech, (CHAR_P));
 #ifdef WIZARD
 E void NDECL(add_debug_extended_commands);
 #endif /* WIZARD */
+E void FDECL(parseautocomplete, (char *, BOOLEAN_P));
 E void FDECL(reset_commands, (BOOLEAN_P));
 E void FDECL(rhack, (char *));
 E int NDECL(doextlist);
@@ -965,6 +966,7 @@ E int FDECL(isqrt, (int));
 E int FDECL(distmin, (int, int, int, int));
 E boolean FDECL(online2, (int, int, int, int));
 E boolean FDECL(pmatch, (const char *, const char *));
+E boolean FDECL(pmatchi, (const char *, const char *));
 #ifndef STRNCMPI
 E int FDECL(strncmpi, (const char *, const char *, int));
 #endif
