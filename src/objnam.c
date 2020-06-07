@@ -4028,7 +4028,7 @@ wiztrap:
             madeterrain = TRUE;
         }
 
-        if (!BSTRCMP(bp, p-4, "tree")) {
+        if (!BSTRCMP(bp, p-4, "tree") && !madeterrain) {
             levl[u.ux][u.uy].typ = TREE;
             pline("A tree.");
             block_point(u.ux, u.uy);
@@ -4410,8 +4410,7 @@ typfnd:
     /* more wishing abuse: don't allow wishing for certain artifacts */
     /* and make them pay; charge them for the wish anyway! */
     if ((is_quest_artifact(otmp) ||
-         (otmp->oartifact && otmp->oartifact == ART_THIEFBANE) ||
-         (otmp->oartifact && rn2(nartifact_exist()) > 1))
+         (otmp->oartifact && otmp->oartifact == ART_THIEFBANE))
 #ifdef WIZARD
         && !wizard
 #endif

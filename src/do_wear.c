@@ -507,6 +507,7 @@ Helmet_on()
            disrobe) or maybe lava (probably not, helm isn't 'organic') */
         uchangealign((u.ualign.type != A_NEUTRAL) ? -u.ualign.type :
                      (uarmh->o_id % 2) ? A_CHAOTIC : A_LAWFUL, 1);
+        docrt(); /* altar highlighting might have changed */
         /* fall through */
 
     case DUNCE_CAP:
@@ -525,6 +526,7 @@ Helmet_on()
             You_feel("%s.", /* track INT change; ignore WIS */
                      ACURR(A_INT) <= (ABASE(A_INT) + ABON(A_INT) + ATEMP(A_INT)) ?
                      "like sitting in a corner" : "giddy");
+            makeknown(DUNCE_CAP);
         } else {
             /* [message formerly given here moved to uchangealign()] */
             makeknown(HELM_OF_OPPOSITE_ALIGNMENT);
@@ -566,6 +568,7 @@ Helmet_off()
 
     case DUNCE_CAP:
         flags.botl = 1;
+        makeknown(DUNCE_CAP);
         break;
 
     case CORNUTHAUM:
@@ -590,6 +593,7 @@ Helmet_off()
            properties, including levitation; uarmh could get
            dropped or destroyed here */
         uchangealign(u.ualignbase[A_CURRENT], 2);
+        docrt(); /* altar highlighting might have changed */
         break;
 
     default:
