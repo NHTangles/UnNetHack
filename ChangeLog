@@ -35,6 +35,7 @@
 	    - Spider nests might have cave spiders on low levels
 	  - Prevent dungeon feature generation on stairs
 	  - Level with trees have a chance of an additional axe
+	  - Fix pacman level connectivity to the rest of the level
 
 	* user interface improvements:
 	  - Optimized placement of menu windows in TTY port
@@ -43,6 +44,8 @@
 	  - Add inventory weight/carrycap and n/52 items display (from xNetHack)
 	  - Show maximal skill enhancement level in enhance menu
 	  - Allow player with both hands cursed to use containers if they have a head
+	  - The '$' command reports the gold in the containers of the player
+	  - Show total weight of object classes with invweight
 
 	* Xlogfile changes:
 	  - Use TAB as separator in xlogfile
