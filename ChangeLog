@@ -10,6 +10,9 @@
 	* Rename the Dark One to Anaraxis the Black (from xNetHack)
 	* Show bones level in dungeon overview
 
+	* Config changes:
+	  - Switched from pmatch to regexp engine for AUTOPICKUP_EXCEPTIONS
+
 	* Port NetHack 3.6 improvements, non exhaustive list:
 	  - Automatic fuzzer for debugging
 	  - Statues as monster symbols
@@ -22,6 +25,7 @@
 	    extended commands
 	  - Interactive extended command list
 	  - Allow vampires to transform into fog clouds to pass closed doors
+	  - Regexp engine for string matching
 
 	* artifact changes:
 	  - Removed artifact wish failure due to the number of existing artifacts

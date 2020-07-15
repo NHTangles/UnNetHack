@@ -1647,6 +1647,7 @@ winid window;
             ttyDisplay->toplin = 0;
         }
         break;
+
     case NHW_STATUS:
         tty_curs(window, 1, 0);
         cl_end();
@@ -1657,13 +1658,16 @@ winid window;
             cl_end();
         }
         break;
+
     case NHW_MAP:
         /* cheap -- clear the whole thing and tell nethack to redraw botl */
         flags.botlx = 1;
-    /* fall into ... */
+        /* fall through */
+
     case NHW_BASE:
         clear_screen();
         break;
+
     case NHW_MENU:
     case NHW_TEXT:
         if(cw->active)
@@ -2063,7 +2067,7 @@ struct WinDesc *cw;
         case '0':
             /* special case: '0' is also the default ball class */
             if (!counting && index(gacc, morc)) goto group_accel;
-        /* fall through to count the zero */
+            /* fall through */ /* to count the zero */
         case '1': case '2': case '3': case '4':
         case '5': case '6': case '7': case '8': case '9':
             count = (count * 10L) + (long) (morc - '0');
@@ -2311,19 +2315,24 @@ boolean blocking;       /* with ttys, all windows are blocking */
         if(!cw->active)
             iflags.window_inited = TRUE;
         break;
+
     case NHW_MAP:
         end_glyphout();
-        if(blocking) {
+        if (blocking) {
             if(!ttyDisplay->toplin) ttyDisplay->toplin = 1;
             tty_display_nhwindow(WIN_MESSAGE, TRUE);
             return;
         }
+        /* fall through */
+
     case NHW_BASE:
         (void) fflush(stdout);
         break;
+
     case NHW_TEXT:
         cw->maxcol = ttyDisplay->cols; /* force full-screen mode */
-    /*FALLTHRU*/
+        /* fall through */
+
     case NHW_MENU:
         cw->active = 1;
         cw->offx = min(COLNO-1, ttyDisplay->cols - cw->maxcol - 1);
@@ -2857,7 +2866,7 @@ winid window;
  * later.
  */
 void
-tty_add_menu(window, glyph, cnt, identifier, ch, gch, attr, str, preselected)
+tty_add_menu(window, glyph, cnt, identifier, ch, gch, attr, str, itemflags)
 winid window;       /* window to use, must be of type NHW_MENU */
 int glyph;          /* glyph to display with item */
 int cnt;            /* max number of times this item can be selected */
@@ -2866,8 +2875,9 @@ char ch;            /* keyboard accelerator (0 = pick our own) */
 char gch;           /* group accelerator (0 = no group) */
 int attr;           /* attribute for string (like tty_putstr()) */
 const char *str;        /* menu string */
-boolean preselected;     /* item is marked as selected */
+unsigned int itemflags; /* itemflags such as MENU_ITEMFLAGS_SELECTED */
 {
+    boolean preselected = ((itemflags & MENU_ITEMFLAGS_SELECTED) != 0);
     register struct WinDesc *cw = 0;
     tty_menu_item *item;
 
