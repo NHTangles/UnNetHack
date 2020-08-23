@@ -370,7 +370,7 @@ const char * const *nlp;
            and restore support which would be necessary for randomization;
            try not to make too many assumptions about time_t's internals;
            use ledger_no rather than depth to keep mine town distinct. */
-        int nseed = (int)((long)u.ubirthday / 257L);
+        int nseed = level_info[0].seed / 257;
 
         name_wanted = ledger_no(&u.uz) + (nseed % 13) - (nseed % 5);
         if (name_wanted < 0) name_wanted += (13 + 5);
@@ -731,7 +731,7 @@ register struct mkroom *sroom;
 /* stock a newly-created black market with objects */
 static void
 stock_blkmar(shp, sroom, sh)
-const struct shclass *shp;
+const struct shclass *shp UNUSED;
 register struct mkroom *sroom;
 register int sh;
 {
