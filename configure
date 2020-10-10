@@ -1507,7 +1507,7 @@ Optional Features:
   --enable-dump-html      Dump an HTML file (default=yes)
   --enable-dump-html-css-file=FILE
                           Path to the css dump file (default=yes, default
-                          file=["/unnethack-6.0.0/share/unnethack/unnethack_dump.css"])
+                          file=["/unnethack-6.0.1/share/unnethack/unnethack_dump.css"])
   --enable-dump-html-css-embedded
                           CSS file should be included in the HTML dump
                           (default=yes)
@@ -7302,10 +7302,10 @@ $as_echo_n "checking whether to enable dump html css file... " >&6; }
 if test "${enable_dump_html_css_file+set}" = set; then :
   enableval=$enable_dump_html_css_file; if test "$enableval" != no; then enable_dump_html_css_file=yes;
          if test "$enableval" != yes; then dump_html_css_file=$enableval;
-         else dump_html_css_file="/unnethack-6.0.0/share/unnethack/unnethack_dump.css"; fi;
+         else dump_html_css_file="/unnethack-6.0.1/share/unnethack/unnethack_dump.css"; fi;
         else enable_dump_html_css_file=no; fi
 else
-  enable_dump_html_css_file=yes;dump_html_css_file="/unnethack-6.0.0/share/unnethack/unnethack_dump.css"
+  enable_dump_html_css_file=yes;dump_html_css_file="/unnethack-6.0.1/share/unnethack/unnethack_dump.css"
 fi
 
    if test "$enable_dump_html_css_file" != "no" ; then
