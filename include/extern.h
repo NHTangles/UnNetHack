@@ -196,11 +196,14 @@ E void FDECL(savech, (CHAR_P));
 #ifdef WIZARD
 E void NDECL(add_debug_extended_commands);
 #endif /* WIZARD */
+extern boolean bind_specialkey(UCHAR_P, const char *);
+extern char txt2key(char *);
 E void FDECL(parseautocomplete, (char *, BOOLEAN_P));
 E void FDECL(reset_commands, (BOOLEAN_P));
 E void FDECL(rhack, (char *));
 E int NDECL(doextlist);
 E int NDECL(extcmd_via_menu);
+extern boolean bind_key(UCHAR_P, const char *);
 E void FDECL(enlightenment, (int, BOOLEAN_P));
 E void FDECL(show_conduct, (int, BOOLEAN_P));
 E int FDECL(xytod, (SCHAR_P, SCHAR_P));
@@ -1071,6 +1074,7 @@ E void NDECL(reassign);
 E int NDECL(doorganize);
 E int FDECL(count_objects, (struct obj *));
 E int FDECL(count_unidentified, (struct obj *));
+E int NDECL(get_recently_picked_up_turn);
 E void NDECL(learn_unseen_invent);
 E void NDECL(update_inventory);
 E int FDECL(count_unpaid, (struct obj *));
@@ -1832,6 +1836,7 @@ E void NDECL(option_help);
 E void FDECL(next_opt, (winid, const char *));
 E int FDECL(fruitadd, (char *));
 E int FDECL(choose_classes_menu, (const char *, int, BOOLEAN_P, char *, char *));
+extern boolean parsebindings(char *);
 E void FDECL(add_menu_cmd_alias, (CHAR_P, CHAR_P));
 E char FDECL(map_menu_cmd, (CHAR_P));
 E void FDECL(assign_warnings, (uchar *));
@@ -1847,7 +1852,10 @@ E void NDECL(free_autopickup_exceptions);
 #ifdef MENU_COLOR
 E boolean FDECL(add_menu_coloring, (char *));
 #endif /* MENU_COLOR */
+E void NDECL(free_menu_coloring);
 E const char * FDECL(clr2colorname, (int));
+E int FDECL(query_color, (const char *));
+E int FDECL(query_attr, (const char *));
 
 /* ### pager.c ### */
 
@@ -2049,6 +2057,7 @@ E void FDECL(altar_wrath, (int, int));
 E int FDECL(invoke_amulet, (struct obj *));
 #endif
 E int NDECL(in_trouble);
+extern void msg_luck_change(int change);
 
 
 /* ### priest.c ### */

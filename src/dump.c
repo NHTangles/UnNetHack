@@ -221,9 +221,7 @@ const char *pre, *str;
 #endif
 }
 
-#ifdef MENU_COLOR
 extern boolean get_menu_coloring(const char *str, int *color, int *attr);
-#endif
 
 static char tmp_html_link[4*BUFSZ];
 static char tmp_html_link_name[2*BUFSZ];
@@ -258,16 +256,16 @@ const char *str;
         fprintf(dump_fp, "  %c - %s%s\n", c, str, starting_inventory);
     if (html_dump_fp) {
         char *link = html_link(dump_typename(obj->otyp), str);
-#ifdef MENU_COLOR
 # ifdef TTY_GRAPHICS
         int color;
         int attr;
+#  ifdef MENU_COLOR
         if (iflags.use_menu_color &&
             get_menu_coloring(str, &color, &attr)) {
             fprintf(html_dump_fp, "<span class=\"nh_color_%d\"><span class=\"nh_item_letter\">%c</span> - %s</span>%s<br />\n", color, c, link, starting_inventory);
         } else
+#  endif
 # endif
-#endif
         fprintf(html_dump_fp, "<span class=\"nh_item_letter\">%c</span> - %s%s<br />\n", c, link, starting_inventory);
     }
 #endif
@@ -336,16 +334,16 @@ struct obj *obj;
     if (html_dump_fp) {
         const char* str = doname(obj);
         char *link = html_link(dump_typename(obj->otyp), str);
-#ifdef MENU_COLOR
 # ifdef TTY_GRAPHICS
         int color;
         int attr;
+#  ifdef MENU_COLOR
         if (iflags.use_menu_color &&
             get_menu_coloring(str, &color, &attr)) {
             fprintf(html_dump_fp, "<li class=\"nh_color_%d\">%s</li>\n", color, link);
         } else
+#  endif
 # endif
-#endif
         fprintf(html_dump_fp, "<li>%s</li>\n", link);
     }
 #endif

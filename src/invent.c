@@ -404,14 +404,24 @@ struct obj *obj;
     obj->where = OBJ_INVENT;
 
     /* fill empty quiver if obj was thrown */
-    if (flags.pickup_thrown && !uquiver && obj_was_thrown &&
-        /* if Mjollnir is thrown and fails to return, we want to
-           auto-pick it when we move to its spot, but not into quiver;
-           aklyses behave like Mjollnir when thrown while wielded, but
-           we lack sufficient information here make them exceptions */
-         (obj->oartifact != ART_MJOLLNIR) &&
-         (throwing_weapon(obj) || is_ammo(obj))) {
-        setuqwep(obj);
+    if (flags.pickup_thrown && obj_was_thrown) {
+        /* Put obj into quiver slot, if
+         *  1. nothing is quivered
+         *  2. or the quivered object has not been manually quivered but obj was
+         *  3. or obj has a bigger quiver priority than the quivered object
+         * */
+        boolean do_quiver = (!uquiver ||
+                             (uquiver->quiver_priority == 0 && obj->quiver_priority != 0) ||
+                             obj->quiver_priority > uquiver->quiver_priority);
+        if (do_quiver &&
+            /* if Mjollnir is thrown and fails to return, we want to
+            auto-pick it when we move to its spot, but not into quiver;
+            aklyses behave like Mjollnir when thrown while wielded, but
+            we lack sufficient information here make them exceptions */
+            (obj->oartifact != ART_MJOLLNIR) &&
+            (throwing_weapon(obj) || is_ammo(obj))) {
+            setuqwep(obj);
+        }
     }
 added:
     addinv_core2(obj);
@@ -2880,6 +2890,24 @@ struct obj *list;
         list = list->nobj;
     }
     return count;
+}
+
+/**
+ * Returns the most recent turn on which an item got picked up.
+ */
+int
+get_recently_picked_up_turn()
+{
+    struct obj *list = invent;
+    int turn = 0;
+
+    while (list) {
+        if (list->picked_up_turn > turn) {
+            turn = list->picked_up_turn;
+        }
+        list = list->nobj;
+    }
+    return turn;
 }
 
 /**

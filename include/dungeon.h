@@ -114,7 +114,11 @@ typedef struct branch {
 #define Is_wiz3_level(x)    (on_level(x, &wiz3_level))
 #define Is_sanctum(x)       (on_level(x, &sanctum_level))
 #define Is_portal_level(x)  (on_level(x, &portal_level))
-#define Is_rogue_level(x)   (on_level(x, &rogue_level))
+#ifdef REINCARNATION
+# define Is_rogue_level(x)   (on_level(x, &rogue_level))
+#else
+# define Is_rogue_level(x)   (0)
+#endif
 #define Is_stronghold(x)    (on_level(x, &stronghold_level))
 #define Is_bigroom(x)       (on_level(x, &bigroom_level))
 #define Is_qstart(x)        (on_level(x, &qstart_level))
@@ -175,6 +179,7 @@ struct linfo {
 #define BONES_LEVEL  0x10    /* this level was a bones level */
 #define is_game_pre_seeded (level_info[0].flags & PRE_SEEDED)
     unsigned int seed;      /* level seed */
+#define game_seed level_info[0].seed
 /*
  * Note:  VISITED and LFILE_EXISTS are currently almost always set at the
  * same time.  However they _mean_ different things.

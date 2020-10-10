@@ -135,7 +135,8 @@ struct flag {
     boolean bones;      /* allow loading bones */
     boolean perma_hallu;    /* let the player permanently hallucinate */
 
-    int last_broken_otyp;   /* from last object that got broken */
+    int last_broken_otyp;    /* from last object that got broken */
+    int last_picked_up_otyp; /* from last object that got picked up */
 
     /* KMH, role patch -- Variables used during startup.
      *
@@ -302,9 +303,7 @@ struct instance_flags {
     boolean extmenu;    /* extended commands use menu interface */
 #endif
     boolean use_background_glyph; /* use background glyph when appropriate */
-#ifdef MENU_COLOR
     boolean use_menu_color; /* use color in menus; only if wc_color */
-#endif
 #ifdef WIN_EDGE
     boolean win_edge;   /* are the menus aligned left&top */
 #endif
@@ -360,9 +359,6 @@ struct instance_flags {
     boolean paranoid_water; /* Ask for 'yes' before walking into water */
 #ifdef USE_TILES
     boolean vt_nethack;
-#endif
-#ifdef QUIVER_FIRED
-    boolean quiver_fired;   /* quiver with f command */
 #endif
 /*
  * Window capability support.

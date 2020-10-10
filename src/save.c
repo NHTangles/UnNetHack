@@ -347,6 +347,7 @@ register int fd, mode;
     savelevchn(fd, mode);
     bwrite(fd, (genericptr_t) &moves, sizeof moves);
     bwrite(fd, (genericptr_t) &monstermoves, sizeof monstermoves);
+    bwrite(fd, (genericptr_t) &game_loop_counter, sizeof game_loop_counter);
     bwrite(fd, (genericptr_t) &quest_status, sizeof(struct q_score));
     bwrite(fd, (genericptr_t) spl_book,
            sizeof(struct spell) * (MAXSPELL + 1));
@@ -1292,25 +1293,6 @@ free_dungeons()
 #endif
     return;
 }
-
-#ifdef MENU_COLOR
-void
-free_menu_coloring()
-{
-    struct menucoloring *tmp = menu_colorings;
-
-    while (tmp) {
-        struct menucoloring *tmp2 = tmp->next;
-# ifdef MENU_COLOR_REGEX
-        (void) regfree(&tmp->match);
-# else
-        free(tmp->match);
-# endif
-        free(tmp);
-        tmp = tmp2;
-    }
-}
-#endif /* MENU_COLOR */
 
 void
 freedynamicdata()

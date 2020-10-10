@@ -26,6 +26,8 @@
 	  - Interactive extended command list
 	  - Allow vampires to transform into fog clouds to pass closed doors
 	  - Regexp engine for string matching
+	  - Support changing key bindings with BIND
+	  - Menucolors management in options menu
 
 	* artifact changes:
 	  - Removed artifact wish failure due to the number of existing artifacts
@@ -44,6 +46,9 @@
 
 	* Sokoban:
 	  - Sokoban's level difficulty is equal to Sokoban's entrance level
+	  - Solving Sokoban without breaking any rules increases luck
+	  - Give feedback when player breaks Sokoban rules for the first time
+	  - Remove Sokoban restrictions after solving the top Sokoban level
 
 	* user interface improvements:
 	  - Optimized placement of menu windows in TTY port
@@ -69,7 +74,6 @@
 	  - Fix map overdrawing statuslines on screens with 24 lines (found by Mandevil)
 	  - Fix crash when changing statuslines to 3 on screens with 24
 	  - Show Elbereth statusline indicator when blind and flying
-	  - Fix compiling with -fno-common
 	  - OPTIONS=truecolor_separator was incorrectly parsed
 	  - Bag of holding explosion also scatters contents of inserted container
 	  - Fix some bit shift warnings
@@ -82,6 +86,11 @@
 	  - Fix crash when trying to delete a worn item when saving bones
 	  - Gold field in xlogfile didn't include stashed gold for GOLDOBJ
 	  - Observing tamed dragon's breathing didn't identify the dragon (reported by Thidwick)
+	  - MONSTERCOLOR could be used to reveal identity of Riders (reported by Nicole Kleinhoff)
+
+	* build fixes:
+	  - Fix compiling with -fno-common
+	  - Fix compilation with bison 3.7
 
 2019-01-01  UnNetHack 5.2.0
 	* Support SOURCE_DATE_EPOCH for reproducible builds (patch from Debian)

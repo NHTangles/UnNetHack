@@ -299,23 +299,15 @@ AC_CHECK_HEADER(regex.h, [have_regex_h=yes],[have_regex_h=no],/* TEST_REGEX */)
 dnl ------ Check for data types
 dnl -- Regex-Check for MENU_COLOR
 if test "$have_regex_h" = "yes"; then
-  AC_CHECK_TYPE(regex_t,
+    AC_CHECK_DECL(regcomp,
     [AC_DEFINE(MENU_COLOR_REGEX, [], [Use regular expressions])
-     AC_DEFINE(MENU_COLOR_REGEX_POSIX, [], [Posix regex is available])
-    ],
-    [AC_CHECK_TYPE(struct re_pattern_buffer,
-      [AC_DEFINE(MENU_COLOR_REGEX, [], [Use regular expressions])
-	AC_DEFINE(MENU_COLOR_REGEX_GNU, [], [GNU regex is available])
-      ],,
-      [AC_INCLUDES_DEFAULT([])
-	#include <regex.h>
-      ])
-    ],[AC_INCLUDES_DEFAULT([])
-	#include <regex.h>
-      ])
+     AC_SUBST(REGEXOBJ,[posixregex.o])],
+    [AC_SUBST(REGEXOBJ,[pmatchregex.o])],
+     #include <regex.h>
+    )
+else
+    AC_SUBST(REGEXOBJ,[pmatchregex.o])
 fi
-AC_CHECK_TYPE(void,,AC_DEFINE(NOVOID, [], [No void type available]))
-
 
 dnl  ----- Check for library functions
 AC_CHECK_DECLS([strncmpi, strnicmp], AC_DEFINE(STRNCMPI, [], [Use strncmpi]))
@@ -433,7 +425,6 @@ NETHACK_ARG(dungeon-growth,[Dungeon growth],DUNGEON_GROWTH,yes)
 # NETHACK_ARG(display-layers,[Support transparent tilesets],DISPLAY_LAYERS,yes)
 NETHACK_ARG(autopickup-exceptions,[Exceptions to autopickup],
   AUTOPICKUP_EXCEPTIONS,yes)
-NETHACK_ARG(quiver-fired,[Firing without anything quivered will ask you what to quiver],QUIVER_FIRED,yes)
 NETHACK_ARG(qwertz,[QWERTZ keyboard layout support],QWERTZ,yes)
 NETHACK_ARG(simple-mail,[simple mail dgamelaunch support],SIMPLE_MAIL,yes)
 
