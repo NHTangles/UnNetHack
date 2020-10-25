@@ -1182,6 +1182,12 @@ boolean with_price;
         Strcat(prefix, "empty ");
     }
 
+    if (cknown &&
+        ((obj->otyp == OIL_LAMP) || (obj->otyp == BRASS_LANTERN)) &&
+        (obj->age == 0)) {
+        Strcat(prefix, "empty ");
+    }
+
     if ((bknown || do_bknown) &&
         obj->oclass != COIN_CLASS &&
         (obj->otyp != POT_WATER || !objects[POT_WATER].oc_name_known
@@ -2312,7 +2318,7 @@ struct obj *obj;
     char *s = shk_your(outbuf, obj); /* assert( s == outbuf ); */
     int space_left = BUFSZ - 1 - strlen(s);
 
-    return strncat(s, minimal_xname(obj), space_left);
+    return strncat(strncat(s, " ", 1), minimal_xname(obj), space_left);
 }
 
 /* capitalized variant of ysimple_name() */
