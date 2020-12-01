@@ -455,6 +455,10 @@ typedef long glyph_t;
    Can be left undefined for not writing extrainfo. */
 #define EXTRAINFO_FN "/dgldir/extrainfo-un/%n.extrainfo"
 
+/* FREE_ALL_MEMORY is neither experimental nor inadequately tested,
+   but it isn't necessary for successful operation of the program */
+#define FREE_ALL_MEMORY /* free all memory at exit */
+
 /* End of Section 5 */
 
 /*

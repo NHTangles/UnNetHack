@@ -149,6 +149,9 @@ remember_topl()
 
     if (len > (unsigned)cw->datlen[idx]) {
         if (cw->data[idx]) free(cw->data[idx]);
+        if (cw->attributes && cw->attributes[idx]) {
+            free(cw->attributes[idx]);
+        }
         len += (8 - (len & 7)); /* pad up to next multiple of 8 */
         cw->data[idx] = (char *)alloc(len);
         cw->datlen[idx] = (short)len;
@@ -344,7 +347,7 @@ char def;
     boolean digit_ok, allow_num;
     struct WinDesc *cw = wins[WIN_MESSAGE];
     boolean doprev = 0;
-    char prompt[QBUFSZ];
+    char prompt[BUFSZ];
 
     if(ttyDisplay->toplin == 1 && !(cw->flags & WIN_STOP)) more();
     cw->flags &= ~WIN_STOP;
@@ -357,8 +360,15 @@ char def;
         Strcpy(respbuf, resp);
         /* any acceptable responses that follow <esc> aren't displayed */
         if ((rb = index(respbuf, '\033')) != 0) *rb = '\0';
-        Sprintf(prompt, "%s [%s] ", query, respbuf);
-        if (def) Sprintf(eos(prompt), "(%c) ", def);
+        (void) strncpy(prompt, query, QBUFSZ-1);
+        prompt[QBUFSZ-1] = '\0';
+        Sprintf(eos(prompt), " [%s]", respbuf);
+        if (def) {
+            Sprintf(eos(prompt), " (%c)", def);
+        }
+        /* not pline("%s ", prompt);
+           trailing space is wanted here in case of reprompt */
+        Strcat(prompt, " ");
         pline("%s", prompt);
     } else {
         pline("%s ", query);
