@@ -231,10 +231,10 @@ struct symdef defsyms[MAXPCHARS] = {
     {'#', "dead tree",  C(CLR_BLACK)},  /* dead tree */
     {'.', "floor of a room", C(CLR_GRAY)},   /* room */
     {'.', "dark part of a room", C(CLR_BLACK)},  /* dark room */
-/*20*/ {'#', "corridor",   C(CLR_GRAY)},    /* dark corr */
+/*20*/ {'#', "corridor",   C(CLR_BLACK)},    /* dark corr */
     {'#', "lit corridor",   C(CLR_GRAY)},   /* lit corr (see mapglyph.c) */
-    {'<', "staircase up",   C(CLR_GRAY)},   /* upstair */
-    {'>', "staircase down", C(CLR_GRAY)},   /* dnstair */
+    {'<', "staircase up",   C(CLR_WHITE)},   /* upstair */
+    {'>', "staircase down", C(CLR_WHITE)},   /* dnstair */
     {'<', "ladder up",  C(CLR_BROWN)},  /* upladder */
     {'>', "ladder down",    C(CLR_BROWN)},  /* dnladder */
     {'_', "altar",      C(CLR_GRAY)},   /* altar */
@@ -354,7 +354,7 @@ static glyph_t ibm_graphics[MAXPCHARS] = {
     241,    /* S_tree:  plus or minus symbol */
     241,    /* S_deadtree:  plus or minus symbol */
     0xfa,   /* S_room:  meta-z, centered dot */
-    g_FILLER(S_stone),  /* S_darkroom:  meta-z, centered dot */
+    0xfa,   /* S_darkroom:  meta-z, centered dot */
 /*20*/ 0xb0,    /* S_corr:  meta-0, light shading */
     0xb1,   /* S_litcorr:   meta-1, medium shading */
     g_FILLER(S_upstair),
@@ -462,7 +462,7 @@ static glyph_t dec_graphics[MAXPCHARS] = {
     0xe7,   /* S_tree:  meta-g, plus-or-minus */
     0xe7,   /* S_deadtree:  meta-g, plus-or-minus */
     0xfe,   /* S_room:  meta-~, centered dot */
-    g_FILLER(S_stone),  /* S_darkroom:  meta-~, centered dot */
+    0xfe,   /* S_darkroom:  meta-~, centered dot */
 /*20*/ g_FILLER(S_corr),
     g_FILLER(S_litcorr),
     g_FILLER(S_upstair),
@@ -676,7 +676,7 @@ static glyph_t utf8_graphics[MAXPCHARS] = {
     0x03a8, /* S_tree:  GREEK CAPITAL LETTER PSI */
     0x03a8, /* S_deadtree:  GREEK CAPITAL LETTER PSI */
     0x00b7, /* S_room:  MIDDLE DOT */
-    g_FILLER(S_stone),  /* S_darkroom:  meta-~, centered dot */
+    0x00b7, /* S_darkroom:  MIDDLE DOT */
     g_FILLER(S_corr),
     g_FILLER(S_litcorr),
     g_FILLER(S_upstair),

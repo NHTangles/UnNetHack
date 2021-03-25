@@ -109,7 +109,7 @@ static struct Bool_Opt
 #else
     {"cursesgraphics", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
-    {"dark_room", &iflags.dark_room, TRUE, SET_IN_GAME},
+    {"dark_room", &iflags.dark_room, TRUE, SET_IN_FILE},
 #ifdef DEBUG_FUZZER
     {"debug_fuzzer", &iflags.debug_fuzzer, FALSE, SET_IN_FILE},
 #endif
@@ -1023,12 +1023,6 @@ initoptions()
     /* as a named (or default) fruit.  Wishing for "fruit" will */
     /* result in the player's preferred fruit [better than "\033"]. */
     obj_descr[SLIME_MOLD].oc_name = "fruit";
-
-    if (iflags.dark_room && iflags.use_color) {
-        showsyms[S_darkroom]=showsyms[S_room];
-    } else {
-        showsyms[S_darkroom]=showsyms[S_stone];
-    }
 }
 
 STATIC_OVL void
@@ -4252,7 +4246,6 @@ goodfruit:
                  */
                 vision_recalc(2);       /* shut down vision */
                 vision_full_recalc = 1; /* delayed recalc */
-                if (iflags.use_color) need_redraw = TRUE;  /* darkroom refresh */
             }
             else if ((boolopt[i].addr) == &iflags.use_inverse ||
                      (boolopt[i].addr) == &iflags.showrace ||
@@ -4616,11 +4609,6 @@ doset()
 
     destroy_nhwindow(tmpwin);
     if (need_redraw) {
-        if (iflags.dark_room && iflags.use_color) {
-            showsyms[S_darkroom]=showsyms[S_room];
-        } else {
-            showsyms[S_darkroom]=showsyms[S_stone];
-        }
         (void) doredraw();
     }
     return 0;

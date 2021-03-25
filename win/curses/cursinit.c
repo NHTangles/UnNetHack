@@ -385,7 +385,7 @@ curses_init_nhcolors()
         init_pair(5, COLOR_BLUE, -1);
         init_pair(6, COLOR_MAGENTA, -1);
         init_pair(7, COLOR_CYAN, -1);
-        init_pair(8, -1, -1);
+        init_pair(8, COLOR_WHITE, -1);
 
         {
             int i;
@@ -420,7 +420,7 @@ curses_init_nhcolors()
 
 
         if (COLORS >= 16) {
-            init_pair(9, COLOR_WHITE, -1);
+            init_pair( 9, TERMINAL_COLOR_GRAY, -1);
             init_pair(10, COLOR_RED + 8, -1);
             init_pair(11, COLOR_GREEN + 8, -1);
             init_pair(12, COLOR_YELLOW + 8, -1);
@@ -934,10 +934,11 @@ curses_init_options()
     /* Make sure that FOOgraphics enables the correct graphic set,
        otherwise this will cause display issues.  We can't disable them in
        options.c in case the game is compiled with both tty and curses. */
+    switch_graphics(ASCII_GRAPHICS);
     if (iflags.IBMgraphics) {
         switch_graphics(IBM_GRAPHICS);
 #ifdef HAVE_LOCALE_H
-    } else if (iflags.UTF8graphics && iflags.supports_utf8) {
+    } else if (iflags.supports_utf8 && !iflags.cursesgraphics) {
         switch_graphics(UTF8_GRAPHICS);
 #endif
     } else if (iflags.DECgraphics || iflags.UTF8graphics || iflags.cursesgraphics) {

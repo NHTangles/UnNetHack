@@ -99,27 +99,27 @@ init_ttycolor()
 {
     if (!colorflag) {
         ttycolors[CLR_RED]      = CLR_RED;
-        ttycolors[CLR_GREEN]        = CLR_GREEN;
-        ttycolors[CLR_BROWN]        = CLR_BROWN;
+        ttycolors[CLR_GREEN]    = CLR_GREEN;
+        ttycolors[CLR_BROWN]    = CLR_BROWN;
         ttycolors[CLR_BLUE]     = CLR_BLUE;
-        ttycolors[CLR_MAGENTA]      = CLR_MAGENTA;
+        ttycolors[CLR_MAGENTA]  = CLR_MAGENTA;
         ttycolors[CLR_CYAN]     = CLR_CYAN;
         ttycolors[CLR_GRAY]     = CLR_GRAY;
         if (iflags.wc2_newcolors) {
             ttycolors[CLR_BLACK]    = CLR_BLACK;
-            defsyms[S_corr].color   = CLR_BLACK;
-            defsyms[S_dnstair].color= CLR_WHITE;
-            defsyms[S_upstair].color= CLR_WHITE;
         } else {
-            ttycolors[CLR_BLACK]    = CLR_BLUE;
+            ttycolors[CLR_BLACK]     = CLR_BLUE;
+            defsyms[S_corr].color    = CLR_GRAY;
+            defsyms[S_dnstair].color = CLR_GRAY;
+            defsyms[S_upstair].color = CLR_GRAY;
         }
-        ttycolors[CLR_ORANGE]       = CLR_ORANGE;
-        ttycolors[CLR_BRIGHT_GREEN] = CLR_BRIGHT_GREEN;
-        ttycolors[CLR_YELLOW]       = CLR_YELLOW;
-        ttycolors[CLR_BRIGHT_BLUE]  = CLR_BRIGHT_BLUE;
-        ttycolors[CLR_BRIGHT_MAGENTA]   = CLR_BRIGHT_MAGENTA;
-        ttycolors[CLR_BRIGHT_CYAN]  = CLR_BRIGHT_CYAN;
-        ttycolors[CLR_WHITE]        = CLR_WHITE;
+        ttycolors[CLR_ORANGE]         = CLR_ORANGE;
+        ttycolors[CLR_BRIGHT_GREEN]   = CLR_BRIGHT_GREEN;
+        ttycolors[CLR_YELLOW]         = CLR_YELLOW;
+        ttycolors[CLR_BRIGHT_BLUE]    = CLR_BRIGHT_BLUE;
+        ttycolors[CLR_BRIGHT_MAGENTA] = CLR_BRIGHT_MAGENTA;
+        ttycolors[CLR_BRIGHT_CYAN]    = CLR_BRIGHT_CYAN;
+        ttycolors[CLR_WHITE]          = CLR_WHITE;
     }
 }
 
@@ -1328,12 +1328,12 @@ init_hilite()
 
     if (iflags.wc2_newcolors) {
         if (colors == 256) {
-            scratch = tparm(setf, 241); /* #626262 */
+            scratch = tparm(setf, TERMINAL_COLOR_GRAY);
             free((genericptr_t) hilites[CLR_BLACK]);
             hilites[CLR_BLACK] = (char *) alloc(strlen(scratch) + 1);
             Strcpy(hilites[CLR_BLACK], scratch);
         } else if (colors == 16777216) {
-            init_color_rgb(CLR_BLACK, 0x626262);
+            init_color_rgb(CLR_BLACK, TERMINAL_COLOR_GRAY_RGB);
         }
     }
 
