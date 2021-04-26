@@ -435,7 +435,7 @@ if test "$enable_dump" != "no" ; then
 	NETHACK_ARG(dump-text,[Dump a text file],DUMP_TEXT_LOG,yes)
 	NETHACK_ARG(dump-html,[Dump an HTML file],DUMP_HTML_LOG,yes)
 	if test "$enable_dump_html" != "no" ; then
-		NETHACK_ARG_WITH_PARAM(dump-html-css-file,[Path to the css dump file],DUMP_HTML_CSS_FILE,yes,FILE,"/unnethack-6.0.2/share/unnethack/unnethack_dump.css")
+		NETHACK_ARG_WITH_PARAM(dump-html-css-file,[Path to the css dump file],DUMP_HTML_CSS_FILE,yes,FILE,"/unnethack-6.0.3/share/unnethack/unnethack_dump.css")
 		NETHACK_ARG(dump-html-css-embedded,[CSS file should be included in the HTML dump],DUMP_HTML_CSS_EMBEDDED,yes)
 	fi
 fi
