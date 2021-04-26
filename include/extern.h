@@ -19,6 +19,7 @@ E char *FDECL(fmt_ptr, (const genericptr));
 
 /* ### allmain.c ### */
 
+extern void early_init();
 E void FDECL(moveloop, (BOOLEAN_P));
 E void NDECL(stop_occupation);
 E void NDECL(display_gamewindows);
@@ -345,6 +346,7 @@ E void FDECL(newsym, (int, int));
 E void FDECL(newsym_force, (int, int));
 E void FDECL(shieldeff, (XCHAR_P, XCHAR_P));
 E void FDECL(tmp_at, (int, int));
+extern void flash_glyph_at(int, int, int, int);
 E void FDECL(swallowed, (int));
 E void FDECL(under_ground, (int));
 E void FDECL(under_water, (int));
@@ -715,6 +717,7 @@ E void FDECL(food_disappears, (struct obj *));
 E void FDECL(food_substitution, (struct obj *, struct obj *));
 E boolean FDECL(bite_monster, (struct monst *mon));
 E void NDECL(fix_petrification);
+extern int intrinsic_possible(int, struct permonst *);
 E void FDECL(consume_oeaten, (struct obj *, int));
 E boolean FDECL(maybe_finished_meal, (BOOLEAN_P));
 E void FDECL(set_tin_variety, (struct obj *, int));
@@ -849,7 +852,7 @@ E void FDECL(unlock_file, (const char *));
 #ifdef USER_SOUNDS
 E boolean FDECL(can_read_file, (const char *));
 #endif
-E void FDECL(read_config_file, (const char *));
+extern boolean read_config_file(const char *, int);
 E void FDECL(check_recordfile, (const char *));
 #if defined(WIZARD)
 E void NDECL(read_wizkit);
@@ -860,6 +863,9 @@ E char** NDECL(get_saved_games);
 E void FDECL(free_saved_games, (char**));
 #ifdef SELF_RECOVER
 E boolean NDECL(recover_savefile);
+#endif
+#ifdef SYSCF_FILE
+extern void assure_syscf_file(void);
 #endif
 E int FDECL(nhclose, (int));
 #ifdef HOLD_LOCKFILE_OPEN
@@ -1012,6 +1018,7 @@ E void FDECL(strbuf_reserve, (strbuf_t *, int));
 E void FDECL(strbuf_empty, (strbuf_t *));
 E void FDECL(strbuf_nl_to_crlf, (strbuf_t *));
 extern int swapbits(int, int, int);
+extern void strip_brackets(char *);
 
 /* ### invent.c ### */
 
@@ -1096,6 +1103,7 @@ E int FDECL(sortloot_cmp, (struct obj *, struct obj *));
 #endif
 E boolean FDECL(is_racial_armor, (struct obj *));
 E boolean FDECL(is_racial_weapon, (struct obj *));
+extern boolean is_dragon_identified(struct permonst *);
 E void FDECL(identify_dragon, (int));
 
 /* ### ioctl.c ### */
@@ -1818,6 +1826,7 @@ E char *FDECL(thesimpleoname, (struct obj *));
 E char *FDECL(bare_artifactname, (struct obj *));
 E char *FDECL(makeplural, (const char *));
 E char *FDECL(makesingular, (const char *));
+extern short name_to_otyp(const char *);
 E struct obj *FDECL(readobjnam, (char *, struct obj *));
 E int FDECL(rnd_class, (int, int));
 E const char *FDECL(suit_simple_name, (struct obj *));
@@ -2157,6 +2166,7 @@ E boolean NDECL(create_particular);
 #endif
 E void FDECL(drop_boulder_on_player, (BOOLEAN_P, BOOLEAN_P, BOOLEAN_P, BOOLEAN_P));
 E int FDECL(drop_boulder_on_monster, (int, int, BOOLEAN_P, BOOLEAN_P));
+extern boolean create_particular_from_buffer(const char*);
 
 /* ### rect.c ### */
 
@@ -2433,6 +2443,7 @@ E int NDECL(dovspell);
 E void FDECL(initialspell, (struct obj *));
 E void NDECL(dump_spells);
 E boolean FDECL(parse_spellorder, (char *));
+extern const char* spelltypemnemonic(int);
 
 /* ### steal.c ### */
 
@@ -2467,6 +2478,10 @@ E void FDECL(dismount_steed, (int));
 E void FDECL(place_monster, (struct monst *, int, int));
 E boolean FDECL(stucksteed, (BOOLEAN_P));
 #endif
+
+/* ### sys.c ### */
+
+extern void sys_early_init();
 
 /* ### teleport.c ### */
 
@@ -2833,6 +2848,7 @@ E const char *FDECL(weapon_descr, (struct obj *));
 E int FDECL(hitval, (struct obj *, struct monst *));
 E int FDECL(dmgval, (struct obj *, struct monst *));
 E int FDECL(special_dmgval, (struct monst *, struct monst *, long, long *));
+extern struct damage_info_t dmgval_info(struct obj*);
 E void FDECL(silver_sears, (struct monst *, struct monst *, long));
 E struct obj *FDECL(select_rwep, (struct monst *));
 E boolean FDECL(mon_might_throw_wep, (struct obj *));
@@ -2844,6 +2860,7 @@ E int NDECL(abon);
 E int NDECL(dbon);
 E void FDECL(wet_a_towel, (struct obj *, int, BOOLEAN_P));
 E void FDECL(dry_a_towel, (struct obj *, int, BOOLEAN_P));
+extern const char* skill_name(int);
 E int NDECL(enhance_weapon_skill);
 #ifdef DUMP_LOG
 E void NDECL(dump_weapon_skill);
@@ -2962,6 +2979,7 @@ E int FDECL(racial_exception, (struct monst *, struct obj *));
 
 /* ### write.c ### */
 
+extern int ink_cost(struct obj *);
 E int FDECL(dowrite, (struct obj *));
 
 /* ### zap.c ### */
@@ -3034,6 +3052,7 @@ E void FDECL(livelog_game_started, (const char*, const char*, const char*, const
 E void FDECL(livelog_game_action, (const char*));
 E void FDECL(livelog_generic, (const char*, const char*));
 E void FDECL(livelog_genocide, (const char*, int));
+extern void livelog_printf(unsigned int, const char *, ...);
 
 #endif /* !MAKEDEFS_C && !LEV_LEX_C */
 

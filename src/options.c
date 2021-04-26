@@ -997,6 +997,24 @@ initoptions()
     /* since this is done before init_objects(), do partial init here */
     objects[SLIME_MOLD].oc_name_idx = SLIME_MOLD;
     nmcpy(pl_fruit, OBJ_NAME(objects[SLIME_MOLD]), PL_FSIZ);
+
+#ifdef SYSCF
+/* someday there may be other SYSCF alternatives besides text file */
+#ifdef SYSCF_FILE
+    /* If SYSCF_FILE is specified, it _must_ exist... */
+    assure_syscf_file();
+
+    /* ... and _must_ parse correctly. */
+    if (!read_config_file(SYSCF_FILE, set_in_sysconf)) {
+        nh_terminate(EXIT_FAILURE);
+    }
+    /*
+     * TODO [maybe]: parse the sysopt entries which are space-separated
+     * lists of usernames into arrays with one name per element.
+     */
+#endif
+#endif /* SYSCF */
+
 #ifndef MAC
     opts = getenv("NETHACKOPTIONS");
     if (!opts) opts = getenv("HACKOPTIONS");
@@ -1005,9 +1023,9 @@ initoptions()
             if (*opts == '@') opts++;   /* @filename */
             /* looks like a filename */
             if (strlen(opts) < BUFSZ/2)
-                read_config_file(opts);
+                read_config_file(opts, set_in_config);
         } else {
-            read_config_file((char *)0);
+            read_config_file((char *) 0, set_in_config);
             /* let the total length of options be long;
              * parseoptions() will check each individually
              */
@@ -1015,7 +1033,7 @@ initoptions()
         }
     } else
 #endif
-    read_config_file((char *)0);
+    read_config_file((char *) 0, set_in_config);
 
     (void)fruitadd(pl_fruit);
     /* Remove "slime mold" from list of object names; this will */
@@ -1391,71 +1409,32 @@ char* bindings;
 
 #if defined(STATUS_COLORS) && defined(TEXTCOLOR)
 
-struct name_value {
-    char *name;
-    int value;
-};
-
-const struct name_value status_colornames[] = {
-    { "black",  CLR_BLACK },
-    { "red",    CLR_RED },
-    { "green",  CLR_GREEN },
-    { "brown",  CLR_BROWN },
-    { "blue",   CLR_BLUE },
-    { "magenta",    CLR_MAGENTA },
-    { "cyan",   CLR_CYAN },
-    { "gray",   CLR_GRAY },
-    { "orange", CLR_ORANGE },
-    { "lightgreen", CLR_BRIGHT_GREEN },
-    { "yellow", CLR_YELLOW },
-    { "lightblue",  CLR_BRIGHT_BLUE },
-    { "lightmagenta", CLR_BRIGHT_MAGENTA },
-    { "lightcyan",  CLR_BRIGHT_CYAN },
-    { "white",  CLR_WHITE },
-    { NULL,     -1 }
-};
-
-const struct name_value status_attrnames[] = {
-    { "none",  ATR_NONE },
-    { "bold",  ATR_BOLD },
-    { "dim",   ATR_DIM },
-    { "underline", ATR_ULINE },
-    { "blink", ATR_BLINK },
-    { "inverse",   ATR_INVERSE },
-    { NULL,    -1 }
-};
-
-int
-value_of_name(name, name_values)
-const char *name;
-const struct name_value *name_values;
-{
-    while (name_values->name && !strstri(name_values->name, name))
-        ++name_values;
-    return name_values->value;
-}
+int match_str2clr(char*);
+int match_str2attr(const char *, boolean);
 
 struct color_option
 parse_color_option(start)
 char *start;
 {
-    struct color_option result = {NO_COLOR, 0};
-    char last;
-    char *end;
-    int attr;
+    struct color_option result = { NO_COLOR, 0 };
+    char *end = NULL;
+    int attr = 0;
+    char *end_of_string = start + strlen(start);
 
-    for (end = start; *end != '&' && *end != '\0'; ++end);
-    last = *end;
-    *end = '\0';
-    result.color = value_of_name(start, status_colornames);
-
-    while (last == '&') {
-        for (start = ++end; *end != '&' && *end != '\0'; ++end);
-        last = *end;
+    if ((end = index(start, '&')) != 0) {
         *end = '\0';
-        attr = value_of_name(start, status_attrnames);
-        if (attr >= 0)
+    }
+    result.color = match_str2clr(start);
+
+    while (end && end < end_of_string) {
+        start = end + 1;
+        if ((end = index(start, '&')) != 0) {
+            *end = '\0';
+        }
+        attr = match_str2attr(start, FALSE);
+        if (attr >= 0) {
             result.attr_bits |= 1 << attr;
+        }
     }
 
     return result;
@@ -1730,6 +1709,25 @@ int attr;
 }
 
 int
+match_str2attr(const char *str, boolean complain)
+{
+    int i, a = -1;
+
+    for (i = 0; i < SIZE(attrnames); i++) {
+        if (attrnames[i].name && fuzzymatch(str, attrnames[i].name, " -_", TRUE)) {
+            a = attrnames[i].attr;
+            break;
+        }
+    }
+
+    if (a == -1 && complain) {
+        config_error_add("Unknown text attribute '%.50s'", str);
+    }
+
+    return a;
+}
+
+int
 query_color(prompt)
 const char *prompt;
 {
@@ -1886,49 +1884,47 @@ const char *errmsg;
 
 /* parse '"regex_string"=color&attr' and add it to menucoloring */
 boolean
-add_menu_coloring(str)
-char *str;
+add_menu_coloring(char *tmpstr) /* never NULL but could be empty */
 {
-    int i, c = CLR_UNDEFINED, a = ATR_UNDEFINED;
-    struct menucoloring *tmp;
-    char *tmps, *cs = strchr(str, '=');
-    int errnum;
-    char errbuf[80];
-    const char *err = (char *)0;
+    int c = NO_COLOR, a = ATR_NONE;
+    char *tmps, *cs, *amp;
+    char str[BUFSZ];
 
-    if (!cs || !str) return FALSE;
+    (void) strncpy(str, tmpstr, sizeof str - 1);
+    str[sizeof str - 1] = '\0';
 
-    tmps = cs;
-    tmps++;
-    while (*tmps && isspace(*tmps)) tmps++;
-
-    for (i = 0; i < SIZE(colornames); i++)
-        if (colornames[i].name && strstri(tmps, colornames[i].name) == tmps) {
-            c = colornames[i].color;
-            break;
-        }
-
-    if (c > CLR_UNDEFINED) return FALSE;
-
-    mungspaces(tmps);
-    tmps = c == CLR_UNDEFINED ? cs : strchr(str, '&');
-    if (tmps) {
-        tmps++;
-        while (*tmps && isspace(*tmps)) tmps++;
-        for (i = 0; i < SIZE(attrnames); i++)
-            if (attrnames[i].name && strstri(tmps, attrnames[i].name) == tmps) {
-                a = attrnames[i].attr;
-                break;
-            }
+    if ((cs = index(str, '=')) == 0) {
+        config_error_add("Malformed MENUCOLOR");
+        return FALSE;
     }
 
-    if (c == CLR_UNDEFINED && a == ATR_UNDEFINED) return FALSE;
+    tmps = cs + 1; /* advance past '=' */
+    mungspaces(tmps);
+    if ((amp = index(tmps, '&')) != 0) {
+        *amp = '\0';
+    }
 
+    c = match_str2clr(tmps);
+    if (c >= CLR_MAX) {
+        return FALSE;
+    }
+
+    if (amp) {
+        tmps = amp + 1; /* advance past '&' */
+        a = match_str2attr(tmps, TRUE);
+        if (a == -1) {
+            return FALSE;
+        }
+    }
+
+    /* the regexp portion here has not been condensed by mungspaces() */
     *cs = '\0';
     tmps = str;
-    if ((*tmps == '"') || (*tmps == '\'')) {
+    if (*tmps == '"' || *tmps == '\'') {
         cs--;
-        while (isspace(*cs)) cs--;
+        while (isspace((uchar) *cs)) {
+            cs--;
+        }
         if (*cs == *tmps) {
             *cs = '\0';
             tmps++;
@@ -2569,7 +2565,6 @@ boolean tinitial, tfrom_file;
     fullname = "number_pad";
     if (match_optname(opts, fullname, 10, TRUE)) {
         boolean compat = (strlen(opts) <= 10);
-        number_pad(iflags.num_pad ? 1 : 0);
         op = string_for_opt(opts, (compat || !initial));
         if (!op) {
             if (compat || negated || initial) {
@@ -2578,23 +2573,24 @@ boolean tinitial, tfrom_file;
                 Cmd.num_pad = iflags.num_pad = !negated;
                 if (iflags.num_pad) iflags.num_pad_mode = 0;
             }
-            return retval;
-        }
-        if (negated) {
+        } else if (negated) {
             bad_negation("number_pad", TRUE);
             return FALSE;
-        }
-        if (*op == '1' || *op == '2') {
-            Cmd.num_pad = iflags.num_pad = 1;
-            if (*op == '2') iflags.num_pad_mode = 1;
-            else iflags.num_pad_mode = 0;
-        } else if (*op == '0') {
-            Cmd.num_pad = iflags.num_pad = 0;
-            iflags.num_pad_mode = 0;
         } else {
-            badoption(opts);
-            return FALSE;
+            if (*op == '1' || *op == '2') {
+                Cmd.num_pad = iflags.num_pad = 1;
+                if (*op == '2') iflags.num_pad_mode = 1;
+                else iflags.num_pad_mode = 0;
+            } else if (*op == '0') {
+                Cmd.num_pad = iflags.num_pad = 0;
+                iflags.num_pad_mode = 0;
+            } else {
+                badoption(opts);
+                return FALSE;
+            }
         }
+        reset_commands(FALSE);
+        number_pad(iflags.num_pad ? 1 : 0);
         return retval;
     }
 
@@ -5040,6 +5036,8 @@ boolean setinitial, setfromfile;
                 Cmd.num_pad = iflags.num_pad = 0;
                 iflags.num_pad_mode = 0;
             }
+            reset_commands(FALSE);
+            number_pad(iflags.num_pad ? 1 : 0);
             free((genericptr_t)mode_pick);
         }
         destroy_nhwindow(tmpwin);

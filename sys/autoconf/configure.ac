@@ -1,5 +1,5 @@
 dnl	UNNETHACK autoconf template
-AC_INIT([UNNETHACK],[6.0.1],[bhaak@gmx.net])
+AC_INIT([UNNETHACK],[6.0.3],[bhaak@gmx.net])
 
 AC_CONFIG_SRCDIR(README.configure)
 AC_SUBST(SRCDIR,[../$srcdir/src])
@@ -438,6 +438,16 @@ if test "$enable_dump" != "no" ; then
 		NETHACK_ARG_WITH_PARAM(dump-html-css-file,[Path to the css dump file],DUMP_HTML_CSS_FILE,yes,FILE,"/unnethack-6.0.2/share/unnethack/unnethack_dump.css")
 		NETHACK_ARG(dump-html-css-embedded,[CSS file should be included in the HTML dump],DUMP_HTML_CSS_EMBEDDED,yes)
 	fi
+fi
+
+NETHACK_ARG_WITH_PARAM(sysconf,[Enable public server global configuration file],SYSCF_FILE,no,FILE,[sysconf])
+if test "$enable_sysconf" != "no" ; then
+	AC_DEFINE([SYSCF], [], [Use configuration file for public server])
+	AC_SUBST(SYSCF_CP,[])
+	AC_SUBST(SYSCF_COMMENT,[])
+else
+	AC_SUBST(SYSCF_CP,[@#])
+	AC_SUBST(SYSCF_COMMENT,[#])
 fi
 
 if test "$enable_tty_graphics" != "no" -a "$host_os" != mingw32; then

@@ -75,6 +75,7 @@
 	  - Wallclock and play time duration on status line
 	  - Support UTF8graphics on curses
 	  - Use bright colors on supporting terminals in tty port
+	  - Monster and object information database
 
 	* skill changes:
 	  - Allow convicts to become skilled in broadsword (reported by RojjaCebolla)
@@ -82,6 +83,9 @@
 	* Xlogfile changes:
 	  - Use TAB as separator in xlogfile
 	  - Record number of normal, magical, and artifact wishes
+
+	* Other:
+	  - Adjusted quantity formula when wishing for stackable items
 
 	* bug fixes:
 	  - Fix over-escaping of characters on HTML dump map

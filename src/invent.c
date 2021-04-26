@@ -1070,6 +1070,7 @@ register const char *let, *word;
                   || otmp->otyp == T_SHIRT
                   || otmp->otyp == CREDIT_CARD
 #endif
+                  || otmp->otyp == ALCHEMY_SMOCK
                   || otmp->otyp == MAGIC_MARKER
                   || otmp->oclass == COIN_CLASS
                   || otmp->oartifact == ART_ORB_OF_FATE
@@ -1718,6 +1719,21 @@ nextclass:
 ret:
     bypass_objlist(*objchn, FALSE);
     return cnt;
+}
+
+/** Returns TRUE if pm is an identified dragon. */
+boolean
+is_dragon_identified(struct permonst *pm)
+{
+    if (pm->mlet != S_DRAGON) {
+        /* not a dragon */
+        return TRUE;
+    }
+    if (monsndx(pm) == PM_CHROMATIC_DRAGON) {
+        return TRUE;
+    }
+    int scales = Dragon_to_scales(pm);
+    return objects[scales].oc_name_known;
 }
 
 void
