@@ -440,7 +440,7 @@ if test "$enable_dump" != "no" ; then
 	fi
 fi
 
-NETHACK_ARG_WITH_PARAM(sysconf,[Enable public server global configuration file],SYSCF_FILE,no,FILE,[sysconf])
+NETHACK_ARG_WITH_PARAM(sysconf,[Enable public server global configuration file],SYSCF_FILE,yes,FILE,[sysconf])
 if test "$enable_sysconf" != "no" ; then
 	AC_DEFINE([SYSCF], [], [Use configuration file for public server])
 	AC_SUBST(SYSCF_CP,[])
