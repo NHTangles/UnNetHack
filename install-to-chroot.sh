@@ -81,11 +81,11 @@ touch "$NAO_CHROOT$NH_VAR_PLAYGROUND/livelog"
 
 # Everything below here should remain owned by root.
 echo "Copying sysconf file"
+mkdir -p "$NAO_CHROOT$NHDAT_DIR"
 cp "$NETHACK_GIT/dat/sysconf" "$NAO_CHROOT$NHDAT_DIR"
 chmod 644 "$NAO_CHROOT$NHDAT_DIR/sysconf"
 
 echo "Copying NetHack nhdat and .css files"
-mkdir -p "$NAO_CHROOT$NHDAT_DIR"
 cp "$NETHACK_GIT/dat/nhdat" "$NAO_CHROOT$NHDAT_DIR"
 chmod 644 "$NAO_CHROOT$NHDAT_DIR/nhdat"
 cp "$NETHACK_GIT/dat/unnethack_dump.css" "$NAO_CHROOT$NHDAT_DIR"
