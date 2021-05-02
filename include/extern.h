@@ -608,7 +608,7 @@ E void FDECL(dump_definition_list_dd, (const char *));
 E void FDECL(dump_definition_list_dt, (const char *));
 E void NDECL(dump_definition_list_end);
 E void FDECL(dump_containerconts, (struct obj *, BOOLEAN_P, BOOLEAN_P, BOOLEAN_P));
-E char* FDECL(html_escape_character, (const char));
+extern const char* html_escape_character(const char);
 E char* FDECL(html_link, (const char *, const char *));
 #ifdef DUMP_LOG
 E int NDECL(dump_screenshot);
@@ -1019,6 +1019,12 @@ E void FDECL(strbuf_empty, (strbuf_t *));
 E void FDECL(strbuf_nl_to_crlf, (strbuf_t *));
 extern int swapbits(int, int, int);
 extern void strip_brackets(char *);
+/* note: the snprintf CPP wrapper includes the "fmt" argument in "..."
+   (__VA_ARGS__) to allow for zero arguments after fmt */
+#define Snprintf(str, size, ...) \
+    nh_snprintf(__func__, __LINE__, str, size, __VA_ARGS__)
+extern void nh_snprintf(const char *func, int line, char *str, size_t size,
+                        const char *fmt, ...);
 
 /* ### invent.c ### */
 
@@ -2232,10 +2238,10 @@ E int NDECL(randrole);
 E int FDECL(randrace, (int));
 E int FDECL(randgend, (int, int));
 E int FDECL(randalign, (int, int));
-E int FDECL(str2role, (char *));
-E int FDECL(str2race, (char *));
-E int FDECL(str2gend, (char *));
-E int FDECL(str2align, (char *));
+extern int str2role(const char *);
+extern int str2race(const char *);
+extern int str2gend(const char *);
+extern int str2align(const char *);
 E boolean FDECL(ok_role, (int, int, int, int));
 E int FDECL(pick_role, (int, int, int, int));
 E boolean FDECL(ok_race, (int, int, int, int));
@@ -3052,7 +3058,7 @@ E void FDECL(livelog_game_started, (const char*, const char*, const char*, const
 E void FDECL(livelog_game_action, (const char*));
 E void FDECL(livelog_generic, (const char*, const char*));
 E void FDECL(livelog_genocide, (const char*, int));
-extern void livelog_printf(unsigned int, const char *, ...);
+extern void livelog_printf(unsigned int, const char *, ...) PRINTF_F(2, 3);
 
 #endif /* !MAKEDEFS_C && !LEV_LEX_C */
 
