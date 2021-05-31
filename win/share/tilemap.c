@@ -1,3 +1,4 @@
+/*      Copyright (c) 2016 by Michael Allison                     */
 /* NetHack may be freely redistributed.  See license for details. */
 
 /*
@@ -8,10 +9,13 @@
 
 #include "hack.h"
 
+#define Fprintf (void) fprintf
+
 const char * FDECL(tilename, (int, int));
 void NDECL(init_tilemap);
 void FDECL(process_substitutions, (FILE *));
 boolean FDECL(acceptable_tilename, (int, const char *, const char *));
+static int include_obj_class = 0;
 
 #if defined(MICRO) || defined(WIN32)
 #undef exit
@@ -23,6 +27,8 @@ extern void FDECL(exit, (int));
 #define MON_GLYPH 1
 #define OBJ_GLYPH 2
 #define OTH_GLYPH 3 /* fortunately unnecessary */
+
+#define EXTRA_SCROLL_DESCR_COUNT ((SCR_BLANK_PAPER - SCR_STINKING_CLOUD) - 1)
 
 /* note that the ifdefs here should be the opposite sense from monst.c/
  * objects.c/rm.h
@@ -54,7 +60,7 @@ struct conditionals {
 #endif
 
 #ifndef CHARON /* not supported yet */
-    { MON_GLYPH, PM_CROESUS, "Charon" },
+    { MON_GLYPH, PM_EXECUTIONER, "Charon" },
 #endif
 #ifndef MAIL
     { MON_GLYPH, PM_FAMINE, "mail daemon" },
@@ -93,7 +99,7 @@ struct conditionals {
      * don't know what a slime mold should look like when renamed anyway
      */
 #ifndef MAIL
-    { OBJ_GLYPH, SCR_STINKING_CLOUD+21, "stamped / mail" },
+    { OBJ_GLYPH, SCR_STINKING_CLOUD + EXTRA_SCROLL_DESCR_COUNT, "stamped / mail" },
 #endif
     { 0, 0, 0}
 };
@@ -161,16 +167,64 @@ int set, entry;
 
     tilenum = 0; /* set-relative number */
     for (i = 0; i < NUM_OBJECTS; i++) {
+        int oc_class = objects[i].oc_class;
+        char *object_class = NULL;
+
+        if (include_obj_class) {
+            switch (oc_class) {
+                case RING_CLASS:
+                    object_class = " ring";
+                    break;
+                case AMULET_CLASS:
+                    if (strncmp("Amulet of Yendor ", obj_descr[i].oc_descr, 16)) {
+                        object_class = " amulet";
+                    }
+                    break;
+                case POTION_CLASS:
+                    object_class = " potion";
+                    break;
+                case SPBOOK_CLASS:
+                    object_class = " spellbook";
+                    break;
+                case WAND_CLASS:
+                    object_class = " wand";
+                    break;
+                case GEM_CLASS:
+                    object_class = " gem";
+                    if (!strcmp("small piece of unrefined mithril", obj_descr[i].oc_name)) {
+                        object_class = " stone";
+                    }
+                    if (!strcmp("rock", obj_descr[i].oc_name)) {
+                        object_class = "";
+                    }
+                    break;
+            }
+        }
         /* prefer to give the description - that's all the tile's
          * appearance should reveal */
         if (set == OBJ_GLYPH && tilenum == entry) {
-            if ( !obj_descr[i].oc_descr )
+            if (!obj_descr[i].oc_descr) {
+                if (object_class) {
+                    Sprintf(buf, "%s%s",
+                            obj_descr[i].oc_name,
+                            object_class);
+                    return buf;
+                }
                 return obj_descr[i].oc_name;
-            if ( !obj_descr[i].oc_name )
+            }
+            if (!obj_descr[i].oc_name) {
+                if (object_class) {
+                    Sprintf(buf, "%s%s",
+                            obj_descr[i].oc_descr,
+                            object_class);
+                    return buf;
+                }
                 return obj_descr[i].oc_descr;
+            }
 
-            Sprintf(buf, "%s / %s",
+            Sprintf(buf, "%s%s / %s",
                     obj_descr[i].oc_descr,
+                    object_class ? object_class : "",
                     obj_descr[i].oc_name);
             return buf;
         }
@@ -222,7 +276,8 @@ int set, entry;
     i = entry - tilenum;
     if (i < (MAXEXPCHARS * EXPL_MAX)) {
         if (set == OTH_GLYPH) {
-            static char *explosion_types[] = { /* hack.h */
+            static const char *explosion_types[] = {
+                /* hack.h */
                 "dark", "noxious", "muddy", "wet",
                 "magical", "fiery", "frosty"
             };
@@ -266,34 +321,6 @@ int set, entry;
     Sprintf(buf, "unknown %d %d", set, entry);
     return buf;
 }
-
-#ifdef TILELIST
-int main()
-{
-    int i;
-    char filename[30];
-    FILE *ofp;
-
-    for (i = 0; i < NUMMONS; i++) {
-        printf("%s\n", tilename(MON_GLYPH, i));
-    }
-    for (i = 0; i < NUM_OBJECTS; i++) {
-        printf("%s\n", tilename(OBJ_GLYPH, i));
-    }
-    int quit = 0;
-    i = 0;
-    while (!quit) {
-        const char* name = tilename(OTH_GLYPH, i++);
-        if (!strncmp("unknown ",name, 8)) {
-            quit = 1;
-        } else {
-            printf("%s\n", name);
-        }
-    }
-
-    return 0;
-}
-#endif
 
 #else /* TILETEXT */
 
@@ -587,3 +614,203 @@ int main()
 }
 
 #endif /* TILETEXT */
+
+struct {
+    int idx;
+    const char *betterlabel;
+    const char *expectedlabel;
+} altlabels[] = {
+    { S_stone,    "dark part of a room", "dark part of a room" },
+    { S_vwall,    "vertical wall", "wall" },
+    { S_hwall,    "horizontal wall", "wall" },
+    { S_tlcorn,   "top left corner wall", "wall" },
+    { S_trcorn,   "top right corner wall", "wall" },
+    { S_blcorn,   "bottom left corner wall", "wall" },
+    { S_brcorn,   "bottom right corner wall", "wall" },
+    { S_crwall,   "cross wall", "wall" },
+    { S_tuwall,   "tuwall", "wall" },
+    { S_tdwall,   "tdwall", "wall" },
+    { S_tlwall,   "tlwall", "wall" },
+    { S_trwall,   "trwall", "wall" },
+    { S_ndoor,    "no door", "doorway" },
+    { S_vodoor,   "vertical open door", "open door" },
+    { S_hodoor,   "horizontal open door", "open door" },
+    { S_vcdoor,   "vertical closed door", "closed door" },
+    { S_hcdoor,   "horizontal closed door", "closed door" },
+    { S_bars,     "iron bars", "iron bars" },
+    { S_tree,     "tree", "tree" },
+    { S_deadtree,"dead tree", "dead tree" },
+    { S_room,     "room", "floor of a room" },
+    { S_darkroom, "darkroom", "dark part of a room" },
+    { S_corr,     "corridor", "corridor" },
+    { S_litcorr,  "lit corridor", "lit corridor" },
+    { S_upstair,  "up stairs", "staircase up" },
+    { S_dnstair,  "down stairs", "staircase down" },
+    { S_upladder, "up ladder", "ladder up" },
+    { S_dnladder, "down ladder", "ladder down" },
+    { S_altar,    "altar", "altar" },
+    { S_grave,    "grave", "grave" },
+    { S_throne,   "throne", "opulent throne" },
+    { S_sink,     "sink", "sink" },
+    { S_fountain, "fountain", "fountain" },
+    { S_pool,     "pool", "water" },
+    { S_ice,      "ice", "ice" },
+    { S_bog,      "muddy swamp", "bog" },
+    { S_lava,     "lava", "molten lava" },
+    { S_vodbridge, "vertical open drawbridge", "lowered drawbridge" },
+    { S_hodbridge, "horizontal open drawbridge", "lowered drawbridge" },
+    { S_vcdbridge, "vertical closed drawbridge", "raised drawbridge" },
+    { S_hcdbridge, "horizontal closed drawbridge", "raised drawbridge" },
+    { S_air,      "air", "air" },
+    { S_cloud,    "cloud", "cloud" },
+    { S_icewall,  "ice wall", "ice wall" },
+    { S_crystalicewall, "crystal ice wall", "crystal ice wall" },
+    { S_water,    "water", "water" },
+    { S_arrow_trap,           "arrow trap", "arrow trap" },
+    { S_dart_trap,            "dart trap", "dart trap" },
+    { S_falling_rock_trap,    "falling rock trap", "falling rock trap" },
+    { S_squeaky_board,        "squeaky board", "squeaky board" },
+    { S_bear_trap,            "bear trap", "bear trap" },
+    { S_land_mine,            "land mine", "land mine" },
+    { S_rolling_boulder_trap, "rolling boulder trap", "rolling boulder trap" },
+    { S_sleeping_gas_trap,    "sleeping gas trap", "sleeping gas trap" },
+    { S_rust_trap,            "rust trap", "rust trap" },
+    { S_fire_trap,            "fire trap", "fire trap" },
+    { S_pit,                  "pit", "pit" },
+    { S_spiked_pit,           "spiked pit", "spiked pit" },
+    { S_hole,                 "hole", "hole" },
+    { S_trap_door,            "trap door", "trap door" },
+    { S_teleportation_trap,   "teleportation trap", "teleportation trap" },
+    { S_level_teleporter,     "level teleporter", "level teleporter" },
+    { S_magic_portal,         "magic portal", "magic portal" },
+    { S_web,                  "web", "web" },
+    { S_statue_trap,          "statue trap", "statue trap" },
+    { S_magic_trap,           "magic trap", "magic trap" },
+    { S_anti_magic_trap,      "anti magic trap", "anti-magic field" },
+    { S_ice_trap,             "ice trap", "ice trap" },
+    { S_polymorph_trap,       "polymorph trap", "polymorph trap" },
+    { S_vibrating_square,     "vibrating square", "vibrating square" },
+    { S_vbeam,    "vertical beam", "cmap 70" },
+    { S_hbeam,    "horizontal beam", "cmap 71" },
+    { S_lslant,   "left slant beam", "cmap 72" },
+    { S_rslant,   "right slant beam", "cmap 73" },
+    { S_digbeam,  "dig beam", "cmap 74" },
+    { S_flashbeam, "flash beam", "cmap 75" },
+    { S_boomleft, "boom left", "cmap 76" },
+    { S_boomright, "boom right", "cmap 77" },
+    { S_ss1,      "shield1", "cmap 78" },
+    { S_ss2,      "shield2", "cmap 79" },
+    { S_ss3,      "shield3", "cmap 80" },
+    { S_ss4,      "shield4", "cmap 81" },
+    { S_poisoncloud, "poison cloud", "poison cloud" },
+    { S_goodpos,  "valid position", "valid position" },
+    { S_sw_tl,    "swallow top left", "cmap 84" },
+    { S_sw_tc,    "swallow top center", "cmap 85" },
+    { S_sw_tr,    "swallow top right", "cmap 86" },
+    { S_sw_ml,    "swallow middle left", "cmap 87" },
+    { S_sw_mr,    "swallow middle right", "cmap 88" },
+    { S_sw_bl,    "swallow bottom left ", "cmap 89" },
+    { S_sw_bc,    "swallow bottom center", "cmap 90" },
+    { S_sw_br,    "swallow bottom right", "cmap 91" },
+    { S_explode1, "explosion top left", "explosion dark 0" },
+    { S_explode2, "explosion top centre", "explosion dark 1" },
+    { S_explode3, "explosion top right", "explosion dark 2" },
+    { S_explode4, "explosion middle left", "explosion dark 3" },
+    { S_explode5, "explosion middle center", "explosion dark 4" },
+    { S_explode6, "explosion middle right", "explosion dark 5" },
+    { S_explode7, "explosion bottom left", "explosion dark 6" },
+    { S_explode8, "explosion bottom center", "explosion dark 7" },
+    { S_explode9, "explosion bottom right", "explosion dark 8" },
+};
+
+boolean
+acceptable_tilename(idx, encountered, expected)
+int idx;
+const char *encountered, *expected;
+{
+    if (idx >= 0 && idx < SIZE(altlabels)) {
+        if (!strcmp(altlabels[idx].expectedlabel, expected)) {
+            if (!strcmp(altlabels[idx].betterlabel, encountered)) {
+                return TRUE;
+            }
+        }
+    }
+
+    if (MAXPCHARS != SIZE(altlabels)) {
+        Fprintf(stderr, "Not enough alt labels, expected %d, got %d\n",
+                MAXPCHARS, SIZE(altlabels));
+        exit(EXIT_FAILURE);
+    }
+
+    return FALSE;
+}
+
+#ifdef TILELIST
+
+#include "../src/monst.c"
+#include "../src/objects.c"
+#include "../src/drawing.c"
+
+static void
+output_tilenames_set(int set, int debug, const char* suffix)
+{
+    int i = 0;
+    char *name = NULL;
+    while (TRUE) {
+        char *were = "";
+        name = tilename(set, i);
+        if (!strncmp("unknown ", name, 8)) {
+            break;
+        }
+        if (set == MON_GLYPH) {
+            if (!strncmp("were", name, 4)) {
+                were = i < 200 ? " (beast)" : " (human)";
+            }
+        }
+        if (set == OTH_GLYPH) {
+            if (!strncmp("cmap ", name, 5)) {
+                for (int i = 0; i < SIZE(altlabels); i++) {
+                    if (!strcmp(altlabels[i].expectedlabel, name)) {
+                        name = altlabels[i].betterlabel;
+                    }
+                }
+            }
+            switch (i) {
+                case S_boomleft:  name = "boomerang left"; break;
+                case S_boomright: name = "boomerang right"; break;
+                case S_ss1: name = "sparkle shield 1"; break;
+                case S_ss2: name = "sparkle shield 2"; break;
+                case S_ss3: name = "sparkle shield 3"; break;
+                case S_ss4: name = "sparkle shield 4"; break;
+                case S_land_mine: name = "land mine (trap)"; break;
+                case S_vodbridge: name = "lowered drawbridge (vertical)"; break;
+                case S_hodbridge: name = "lowered drawbridge (horizontal)"; break;
+                case S_vcdbridge: name = "raised drawbridge (vertical)"; break;
+                case S_hcdbridge: name = "raised drawbridge (horizontal)"; break;
+                case S_vodoor: name = "open door (vertical)"; break;
+                case S_hodoor: name = "open door (horizontal)"; break;
+                case S_vcdoor: name = "closed door (vertical)"; break;
+                case S_hcdoor: name = "closed door (horizontal)"; break;
+                case S_pool: name = "water (pool)"; break;
+                case S_water: name = "water (under water)"; break;
+            }
+        }
+        if (debug) {
+            printf("%d ", i);
+        }
+        printf("%s%s%s\n", name, were, suffix);
+        i++;
+    }
+}
+
+int main()
+{
+    include_obj_class = TRUE;
+    output_tilenames_set(MON_GLYPH, FALSE, "");
+    output_tilenames_set(OBJ_GLYPH, FALSE, "");
+    output_tilenames_set(OTH_GLYPH, FALSE, "");
+    output_tilenames_set(MON_GLYPH, FALSE, " (statue)");
+
+    return 0;
+}
+#endif
